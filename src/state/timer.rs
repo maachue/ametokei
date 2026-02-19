@@ -1,4 +1,4 @@
-use chrono::{Local, Timelike, Utc};
+use chrono::{DateTime, Local, Timelike, Utc};
 use ratatui::layout::Rect;
 
 #[derive(Copy, Clone)]
@@ -20,23 +20,42 @@ impl Meridiem {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Timer {
     pub hours: u8,
     pub minutes: u8,
     pub seconds: u8,
     pub meridiem: Option<Meridiem>,
+    pub date: String,
 }
 impl Timer {
-    pub fn new(utc: bool, format12h: bool) -> Self {
+    pub fn new(utc: bool, format12h: bool, format: &str) -> Self {
         if utc {
-            Self::from_time_like(Utc::now(), format12h)
+            let datetime = Utc::now();
+            let (hours, minutes, seconds, meridiem) = Self::from_time_like(datetime, format12h);
+
+            Self {
+                hours,
+                minutes,
+                seconds,
+                meridiem,
+                date: format!("{}", datetime.format(format)),
+            }
         } else {
-            Self::from_time_like(Local::now(), format12h)
+            let datetime = Local::now();
+            let (hours, minutes, seconds, meridiem) = Self::from_time_like(datetime, format12h);
+
+            Self {
+                hours,
+                minutes,
+                seconds,
+                meridiem,
+                date: format!("{}", datetime.format(format)),
+            }
         }
     }
 
-    fn from_time_like<T: Timelike>(time: T, format12h: bool) -> Self {
+    fn from_time_like<T: Timelike>(time: T, format12h: bool) -> (u8, u8, u8, Option<Meridiem>) {
         let (hours, meridiem) = if format12h {
             let (is_pm, h12) = time.hour12();
             (h12 as u8, Some(Meridiem::from(is_pm)))
@@ -44,12 +63,7 @@ impl Timer {
             (time.hour() as u8, None)
         };
 
-        Self {
-            hours,
-            minutes: time.minute() as u8,
-            seconds: time.second() as u8,
-            meridiem,
-        }
+        (hours, time.minute() as u8, time.second() as u8, meridiem)
     }
 }
 

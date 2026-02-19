@@ -11,7 +11,7 @@ use crate::{
 };
 
 pub struct TimerWidget<'a> {
-    pub timer: crate::state::timer::Timer,
+    pub timer: &'a crate::state::timer::Timer,
     pub color: Color,
     pub state: &'a TimerState,
     pub font: &'a Font,
