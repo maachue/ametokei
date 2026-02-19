@@ -1,7 +1,7 @@
 use unicode_width::UnicodeWidthStr;
 
 use super::SerializeFont as ConfigFont;
-use crate::font::{Colon as EngineColon, Fonts as EngineFonts};
+use crate::font::{Colon as EngineColon, Font as EngineFont};
 
 #[derive(Debug, thiserror::Error)]
 pub enum ParseConfigFontErr {
@@ -39,7 +39,7 @@ pub fn check_width_in_digit(
     Ok(())
 }
 
-impl TryFrom<ConfigFont> for EngineFonts {
+impl TryFrom<ConfigFont> for EngineFont {
     type Error = ParseConfigFontErr;
 
     fn try_from(value: ConfigFont) -> Result<Self, Self::Error> {

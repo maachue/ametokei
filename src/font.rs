@@ -3,7 +3,7 @@ pub struct Colon {
     pub lines: Vec<String>,
 }
 
-pub struct Fonts {
+pub struct Font {
     pub digits: [Vec<String>; 10],
     pub width: u16,
     pub height: u16,
