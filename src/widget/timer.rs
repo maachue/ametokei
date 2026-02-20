@@ -36,24 +36,24 @@ impl<'a> TimerWidget<'a> {
     }
 
     pub fn render_decimal(&self, d: u8, area: Rect, buf: &mut Buffer) {
-        let layout = Layout::new(
+        let [
+            num1,
+            _, /* padding width */
+            num2,
+            _, /* padding width */
+        ] = Layout::new(
             ratatui::layout::Direction::Horizontal,
-            Constraint::from_lengths([self.font.width, self.font.width]),
+            Constraint::from_lengths([
+                self.font.width,
+                self.state.padding.0,
+                self.font.width,
+                self.state.padding.0,
+            ]),
         )
-        .split(area);
+        .areas(area);
 
-        Self::render_number(
-            &self.font.digits[d as usize / 10],
-            layout[0],
-            self.color,
-            buf,
-        );
-        Self::render_number(
-            &self.font.digits[d as usize % 10],
-            layout[1],
-            self.color,
-            buf,
-        );
+        Self::render_number(&self.font.digits[d as usize / 10], num1, self.color, buf);
+        Self::render_number(&self.font.digits[d as usize % 10], num2, self.color, buf);
     }
 }
 
@@ -62,7 +62,11 @@ impl<'a> Widget for TimerWidget<'a> {
     where
         Self: Sized,
     {
-        let [_ /* padding height */, area, _ /* padding height */] = Layout::new(
+        let [
+            _, /* padding height */
+            area,
+            _, /* padding height */
+        ] = Layout::new(
             ratatui::layout::Direction::Vertical,
             Constraint::from_lengths([
                 self.state.padding.1,
@@ -73,12 +77,13 @@ impl<'a> Widget for TimerWidget<'a> {
         .areas(self.state.area);
 
         if self.state.show_sec {
-            let [hours, colon, minutes] = Layout::new(
+            let [hours, colon, _ /* padding width */, minutes] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([
-                    self.font.width * 2,
+                    (self.font.width + self.state.padding.0) * 2,
                     self.font.colon.width,
-                    self.font.width * 2,
+                    self.state.padding.0,
+                    (self.font.width + self.state.padding.0) * 2,
                 ]),
             )
             .areas(area);
@@ -87,14 +92,24 @@ impl<'a> Widget for TimerWidget<'a> {
             Self::render_colon(&self.font.colon, colon, self.color, buf);
             self.render_decimal(self.timer.minutes, minutes, buf);
         } else {
-            let [hours, colon, minutes, colon1, seconds] = Layout::new(
+            let [
+                hours,
+                colon,
+                _, /* padding width */
+                minutes,
+                colon1,
+                _, /* padding width */
+                seconds,
+            ] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([
-                    self.font.width * 2,
+                    (self.font.width + self.state.padding.0) * 2,
                     self.font.colon.width,
-                    self.font.width * 2,
+                    self.state.padding.0,
+                    (self.font.width + self.state.padding.0) * 2,
                     self.font.colon.width,
-                    self.font.width * 2,
+                    self.state.padding.0,
+                    (self.font.width + self.state.padding.0) * 2,
                 ]),
             )
             .areas(area);

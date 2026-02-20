@@ -32,14 +32,19 @@ pub enum Meridiem {
 }
 impl Meridiem {
     pub fn from(hours: &mut u8) -> Self {
-        if *hours > 12 { *hours -= 12; Self::PM } else { Self::AM }
+        if *hours > 12 {
+            *hours -= 12;
+            Self::PM
+        } else {
+            Self::AM
+        }
     }
 }
 
 pub struct State {
     pub timer: Timer,
     pub date: String,
-    pub merdiem: Meridiem,
+    pub merdiem: Option<Meridiem>,
     pub timer_state: TimerState,
     pub font: Font,
 }
