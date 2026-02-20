@@ -18,6 +18,7 @@ pub struct GeneralConfig {
     pub show_seconds: bool,
     pub utc: bool,
     pub format_12h: bool,
+    pub merdiem: MeridiemConfig,
 }
 impl Default for GeneralConfig {
     fn default() -> Self {
@@ -27,6 +28,21 @@ impl Default for GeneralConfig {
             show_seconds: false,
             utc: false,
             format_12h: false,
+            merdiem: MeridiemConfig::default(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct MeridiemConfig {
+    pub am: String,
+    pub pm: String,
+}
+impl Default for MeridiemConfig {
+    fn default() -> Self {
+        Self {
+            am: "[AM]".to_string(),
+            pm: "[PM]".to_string(),
         }
     }
 }
