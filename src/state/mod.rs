@@ -1,11 +1,14 @@
-pub mod timer;
 pub mod date;
+pub mod timer;
 
 use chrono::{Local, Utc};
 use color_eyre::Result;
 use ratatui::layout::{Layout, Rect};
 
-use self::{timer::{Timer, TimerState}, date::{DateState, Date}};
+use self::{
+    date::{Date, DateState},
+    timer::{Timer, TimerState},
+};
 use crate::font::Font;
 
 #[derive(PartialEq, Eq, Copy, Clone)]
@@ -34,49 +37,70 @@ pub struct State {
 }
 impl State {
     pub fn new(size: Rect, config: &crate::config::MinimalConfig, font: Font) -> Result<Self> {
-        let (timer_area, date_area) = Self::get_area(size, config.padding, config.center, config.sec, !config.hide_date, &font)?;
+        let (timer_area, date_area) = Self::get_area(
+            size,
+            config.padding,
+            config.center,
+            config.sec,
+            !config.hide_date,
+            &font,
+        )?;
 
-        let (timer, maybe_date) = Self::get_time(config.utc, !config.hide_date, &config.format_date, config.hour12);
+        let (timer, maybe_date) = Self::get_time(
+            config.utc,
+            !config.hide_date,
+            &config.format_date,
+            config.hour12,
+        );
 
-        let date = if let Some(area) = date_area && let Some(date) = maybe_date {
-            Some(DateState {
-                area,
-                date,
-            })
+        let date = if let Some(area) = date_area
+            && let Some(date) = maybe_date
+        {
+            Some(DateState { area, date })
         } else {
             None
         };
 
-        let timer_state = TimerState { area: timer_area };
+        let timer_state = TimerState {
+            area: timer_area,
+            padding: config.padding,
+            show_sec: config.sec,
+        };
 
-        Ok( Self {
+        Ok(Self {
             timer,
             timer_state,
             font,
             date,
-        }
-        )
+        })
     }
 
-    pub fn get_time(utc: bool, show_date: bool, format: &str, hour12: bool) -> (Timer, Option<Date>) {
+    pub fn get_time(
+        utc: bool,
+        show_date: bool,
+        format: &str,
+        hour12: bool,
+    ) -> (Timer, Option<Date>) {
         if utc {
             let utc = Utc::now();
 
-            let date = if show_date { Some(Date::from_date_time(utc, format)) } else { None };
+            let date = if show_date {
+                Some(Date::from_date_time(utc, format))
+            } else {
+                None
+            };
 
-            (
-                Timer::from_time_like(utc, hour12),
-                date,
-            )
-        }  else {
+            (Timer::from_time_like(utc, hour12), date)
+        } else {
             let local = Local::now();
 
-            let date = if show_date { Some(Date::from_date_time(local, format)) } else { None };
+            let date = if show_date {
+                Some(Date::from_date_time(local, format))
+            } else {
+                None
+            };
 
-            (
-                Timer::from_time_like(local, hour12),
-                date,
-            )
+            (Timer::from_time_like(local, hour12), date)
         }
     }
 
