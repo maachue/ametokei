@@ -1,10 +1,13 @@
 [package]
-name = "tty-clock-rs"
+name = "jikan"
 version = "0.1.0"
 edition = "2024"
 
 license = "MIT"
-authors = ["Maachue <maachue.project@outlook.com>", "ckaznable <ckaznable@gmail.com>"]
+authors = [
+    "Maachue <maachue.project@outlook.com>",
+    "ckaznable <ckaznable@gmail.com>",
+]
 
 [dependencies]
 # error handling
