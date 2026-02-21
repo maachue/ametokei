@@ -53,7 +53,7 @@ impl Timer {
 
 pub struct TimerState {
     pub area: Rect,
-    pub padding: (u16, u16),
+    pub spacing: (u16, u16),
     pub show_sec: bool,
 }
 impl TimerState {

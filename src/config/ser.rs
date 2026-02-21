@@ -64,8 +64,8 @@ impl Default for PerformanceConfig {
 
 #[derive(Serialize, Deserialize)]
 pub struct FontConfig {
-    pub padding_width_between_digits: u16,
-    pub padding_between_timer_and_date: u16,
+    pub spacing_width_between_digits: u16,
+    pub spacing_between_timer_and_date: u16,
 }
 
 #[derive(Serialize, Deserialize)]

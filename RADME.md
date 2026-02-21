@@ -2,7 +2,6 @@
 
 <!-- tty-clock with weather effect written in Rust and powerd by [ratatui](https://github.com/ratatui-org/ratatui) and tenki means weather in japanese -->
 
-
 # Jikan(時間)
 
 _[**unofficial** fork from [Tenki(天気)](https://github.com/ckaznable/tenki)]_
@@ -15,7 +14,6 @@ tty-clock with customizable configuration written in Rust and powered by [ratatu
 <!-- ![demo](./doc/demo.gif) -->
 
 ## Installation
-
 
 <!-- [![Packaging status](https://repology.org/badge/vertical-allrepos/tenki.svg)](https://repology.org/project/tenki/versions) -->
 
@@ -111,10 +109,10 @@ fps = 60
 tps = 60
 
 [fontconfig]
-padding_width_between_digits = 1
-padding_between_timer_and_date = 1
+spacing_width_between_digits = 1
+spacing_between_timer_and_date = 1
 
-[font.YOUR_CUSTOM_FONT_NAME]
+[fonts.YOUR_CUSTOM_FONT_NAME]
 width_number = 5 # your number digit width
 width_colon = 5 # your colon digit width
 height = 3 # your digits' height
@@ -134,3 +132,4 @@ colon = ["colon", "colon", "colon"]
 ## LICENSE
 
 [MIT](./LICENSE)
+

@@ -51,7 +51,7 @@ impl State {
         let (timer, maybe_date) = Self::get_time(config.utc, format_date.as_deref(), config.hour12);
         let layouted = crate::widget::Layouted::get(
             size,
-            config.padding,
+            config.spacing,
             config.center,
             config.sec,
             &font,
@@ -61,7 +61,7 @@ impl State {
 
         let timer_state = TimerState {
             area: layouted.timer,
-            padding: config.padding,
+            spacing: config.spacing,
             show_sec: config.sec,
         };
 

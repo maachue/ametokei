@@ -31,7 +31,7 @@ pub struct Layouted {
 impl Layouted {
     pub fn get(
         size: Rect,
-        padding: (u16, u16),
+        spacing: (u16, u16),
         center: bool,
         show_sec: bool,
         font: &Font,
@@ -47,7 +47,7 @@ impl Layouted {
             });
         };
 
-        let (timer_w, timer_h) = TimerState::get_size(padding, show_sec, font);
+        let (timer_w, timer_h) = TimerState::get_size(spacing, show_sec, font);
         let date_w = if let Some(date) = date {
             date.width() as u16
         } else {

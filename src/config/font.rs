@@ -7,36 +7,14 @@ use crate::font::{Colon as EngineColon, Font as EngineFont};
 pub enum ParseConfigFontErr {
     #[error("Width of `{name}` digit is incorrect (failed at line {line}; expected: {width}).")]
     WidthIncorrect {
-        name: String,
+        name: &'static str,
         line: usize,
         width: u16,
     },
     #[error("Height of `{name}` digit is incorrect (expected: {height}).")]
-    HeightIncorrect { name: String, height: u16 },
+    HeightIncorrect { name: &'static str, height: u16 },
     #[error("`{0}` digit is empty!")]
-    EmptyDigit(String),
-}
-
-pub fn check_width_in_digit(
-    digit: &[String],
-    expected: usize,
-) -> Result<(), usize /* line cause error */> {
-    let mut len = digit.first().unwrap().len();
-
-    if len != expected {
-        return Err(1);
-    }
-
-    for (i, line) in digit.iter().enumerate() {
-        let new_len = line.len();
-        if new_len == len {
-            len = new_len
-        } else {
-            return Err(i);
-        }
-    }
-
-    Ok(())
+    EmptyDigit(&'static str),
 }
 
 impl TryFrom<ConfigFont> for EngineFont {
@@ -71,46 +49,40 @@ impl TryFrom<ConfigFont> for EngineFont {
 impl ConfigFont {
     pub fn checker(&self) -> Result<(), ParseConfigFontErr> {
         let all_digits = [
-            ("0", &self.zero),
-            ("1", &self.one),
-            ("2", &self.two),
-            ("3", &self.three),
-            ("4", &self.four),
-            ("5", &self.five),
-            ("6", &self.six),
-            ("7", &self.seven),
-            ("8", &self.eight),
-            ("9", &self.nine),
-            (":", &self.colon),
+            ("0", &self.zero, &self.width_number),
+            ("1", &self.one, &self.width_number),
+            ("2", &self.two, &self.width_number),
+            ("3", &self.three, &self.width_number),
+            ("4", &self.four, &self.width_number),
+            ("5", &self.five, &self.width_number),
+            ("6", &self.six, &self.width_number),
+            ("7", &self.seven, &self.width_number),
+            ("8", &self.eight, &self.width_number),
+            ("9", &self.nine, &self.width_number),
+            (":", &self.colon, &self.width_colon),
         ];
 
-        for (name, lines) in all_digits {
-            let expected_width = if name == ":" {
-                self.width_colon
-            } else {
-                self.width_number
-            } as usize;
-
+        for (name, lines, expected_width) in all_digits {
             // 1. Check empty
             if lines.is_empty() {
-                return Err(ParseConfigFontErr::EmptyDigit(name.to_string()));
+                return Err(ParseConfigFontErr::EmptyDigit(name));
             }
 
             // 2. Check height
             if lines.len() != self.height as usize {
                 return Err(ParseConfigFontErr::HeightIncorrect {
-                    name: name.to_string(),
+                    name,
                     height: self.height,
                 });
             }
 
             // 3. Check width
             for (i, line) in lines.iter().enumerate() {
-                if line.width() != expected_width {
+                if line.width() != *expected_width as usize {
                     return Err(ParseConfigFontErr::WidthIncorrect {
-                        name: name.to_string(),
+                        name,
                         line: i,
-                        width: expected_width as u16,
+                        width: *expected_width,
                     });
                 }
             }

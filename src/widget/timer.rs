@@ -45,9 +45,9 @@ impl<'a> TimerWidget<'a> {
             ratatui::layout::Direction::Horizontal,
             Constraint::from_lengths([
                 self.font.width,
-                self.state.padding.0,
+                self.state.spacing.0,
                 self.font.width,
-                self.state.padding.0,
+                self.state.spacing.0,
             ]),
         )
         .areas(area);
@@ -69,9 +69,9 @@ impl<'a> Widget for TimerWidget<'a> {
         ] = Layout::new(
             ratatui::layout::Direction::Vertical,
             Constraint::from_lengths([
-                self.state.padding.1,
+                self.state.spacing.1,
                 self.font.height,
-                self.state.padding.1,
+                self.state.spacing.1,
             ]),
         )
         .areas(self.state.area);
@@ -80,10 +80,10 @@ impl<'a> Widget for TimerWidget<'a> {
             let [hours, colon, _ /* padding width */, minutes] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([
-                    (self.font.width + self.state.padding.0) * 2,
+                    (self.font.width + self.state.spacing.0) * 2,
                     self.font.colon.width,
-                    self.state.padding.0,
-                    (self.font.width + self.state.padding.0) * 2,
+                    self.state.spacing.0,
+                    (self.font.width + self.state.spacing.0) * 2,
                 ]),
             )
             .areas(area);
@@ -103,13 +103,13 @@ impl<'a> Widget for TimerWidget<'a> {
             ] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([
-                    (self.font.width + self.state.padding.0) * 2,
+                    (self.font.width + self.state.spacing.0) * 2,
                     self.font.colon.width,
-                    self.state.padding.0,
-                    (self.font.width + self.state.padding.0) * 2,
+                    self.state.spacing.0,
+                    (self.font.width + self.state.spacing.0) * 2,
                     self.font.colon.width,
-                    self.state.padding.0,
-                    (self.font.width + self.state.padding.0) * 2,
+                    self.state.spacing.0,
+                    (self.font.width + self.state.spacing.0) * 2,
                 ]),
             )
             .areas(area);

@@ -12,8 +12,8 @@ pub struct MinimalConfig {
     pub hour12: bool,
     pub center: bool,
     pub sec: bool,
-    pub font: String,
+    // pub font: String, // actually useless (why do i need font name?)
     pub tps: u8,
     pub fps: u8,
-    pub padding: (u16, u16),
+    pub spacing: (u16, u16),
 }
