@@ -5,9 +5,7 @@ use crossterm::{
     cursor,
     event::DisableMouseCapture,
     execute,
-    terminal::{
-        self, EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode,
-    },
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 use ratatui::{Terminal, prelude::CrosstermBackend};
 
@@ -18,9 +16,7 @@ use crate::{
 };
 
 pub struct App {
-    config: MinimalConfig,
     state: State,
-
     terminal: Terminal<CrosstermBackend<Stdout>>,
     // tui: Tui,
     quit: bool,
@@ -39,7 +35,6 @@ impl App {
 
         Ok(Self {
             state,
-            config,
             terminal,
             quit: false,
             should_render: ShouldRender::Render,

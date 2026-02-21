@@ -2,11 +2,12 @@ pub mod date;
 pub mod timer;
 
 use chrono::{Local, Utc};
-use color_eyre::Result;
-use ratatui::layout::{Layout, Rect};
+use color_eyre::{Result, Section};
+use ratatui::layout::Rect;
+use unicode_width::UnicodeWidthStr;
 
 use self::{
-    date::{Date, DateState},
+    date::DateState,
     timer::{Timer, TimerState},
 };
 use crate::font::Font;
@@ -31,128 +32,75 @@ impl ShouldRender {
 
 pub struct State {
     pub timer: Timer,
-    pub date: Option<DateState>,
+    pub date: Option<String>,
+    pub date_state: Option<DateState>,
     pub timer_state: TimerState,
     pub font: Font,
+
+    // caching
+    format_date: Option<String>,
 }
 impl State {
     pub fn new(size: Rect, config: &crate::config::MinimalConfig, font: Font) -> Result<Self> {
-        let (timer_area, date_area) = Self::get_area(
-            size,
-            config.padding,
-            config.center,
-            config.sec,
-            !config.hide_date,
-            &font,
-        )?;
-
-        let (timer, maybe_date) = Self::get_time(
-            config.utc,
-            !config.hide_date,
-            &config.format_date,
-            config.hour12,
-        );
-
-        let date = if let Some(area) = date_area
-            && let Some(date) = maybe_date
-        {
-            Some(DateState { area, date })
+        let format_date = if config.show_date {
+            Some(config.format_date.clone())
         } else {
             None
         };
 
+        let (timer, maybe_date) = Self::get_time(config.utc, format_date.as_deref(), config.hour12);
+        let layouted = crate::widget::Layouted::get(
+            size,
+            config.padding,
+            config.center,
+            config.sec,
+            &font,
+            maybe_date.as_deref(),
+        )
+        .with_suggestion(|| "Maybe make the terminal size a bit bigger?")?;
+
         let timer_state = TimerState {
-            area: timer_area,
+            area: layouted.timer,
             padding: config.padding,
             show_sec: config.sec,
         };
 
+        let date_state = if let Some(area) = layouted.date
+            && let Some(date) = &maybe_date
+        {
+            Some(DateState {
+                area,
+                padding: area.width.saturating_sub(date.width() as u16),
+            })
+        } else {
+            None
+        };
+
         Ok(Self {
             timer,
+            date: maybe_date,
             timer_state,
             font,
-            date,
+            date_state,
+            format_date,
         })
     }
 
-    pub fn get_time(
-        utc: bool,
-        show_date: bool,
-        format: &str,
-        hour12: bool,
-    ) -> (Timer, Option<Date>) {
+    pub fn get_time(utc: bool, format: Option<&str>, hour12: bool) -> (Timer, Option<String>) {
         if utc {
             let utc = Utc::now();
 
-            let date = if show_date {
-                Some(Date::from_date_time(utc, format))
-            } else {
-                None
-            };
-
-            (Timer::from_time_like(utc, hour12), date)
+            (
+                Timer::from_time_like(utc, hour12),
+                format.map(|t| utc.format(t).to_string()),
+            )
         } else {
             let local = Local::now();
 
-            let date = if show_date {
-                Some(Date::from_date_time(local, format))
-            } else {
-                None
-            };
-
-            (Timer::from_time_like(local, hour12), date)
-        }
-    }
-
-    fn get_area(
-        size: Rect,
-        padding: (u16, u16),
-        center: bool,
-        show_sec: bool,
-        show_date: bool,
-        current_font: &Font,
-    ) -> Result<(Rect, Option<Rect>)> {
-        if current_font.width > size.width || current_font.height > size.height {
-            return Err(color_eyre::eyre::eyre!(
-                "The size of terminal too small (expected: > ({};{}) ; current: ({};{})",
-                current_font.width,
-                current_font.height,
-                size.width,
-                size.height,
-            ));
-        };
-
-        let (timer_w, timer_h) = TimerState::get_size(padding, show_sec, current_font);
-        let (date_w, date_h) = if show_date { (timer_w, 1) } else { (0, 0) };
-
-        let padding_w = if !center {
-            0
-        } else {
-            size.width.saturating_sub(timer_w + date_w) / 2
-        };
-        let padding_h = if !center {
-            0
-        } else {
-            size.height.saturating_sub(timer_h + date_h) / 2
-        };
-
-        let area = Rect {
-            x: padding_w,
-            y: padding_h,
-            width: timer_w + date_w,
-            height: timer_h + date_h,
-        };
-
-        if show_date {
-            let [timer, date] = Layout::new(
-                ratatui::layout::Direction::Vertical,
-                ratatui::layout::Constraint::from_lengths([timer_h, date_h]),
+            (
+                Timer::from_time_like(local, hour12),
+                format.map(|t| local.format(t).to_string()),
             )
-            .areas(area);
-
-            Ok((timer, Some(date)))
-        } else {
-            Ok((area, None))
         }
     }
 }

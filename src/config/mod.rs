@@ -7,7 +7,7 @@ pub use ser::*;
 /// minimal config
 pub struct MinimalConfig {
     pub format_date: String,
-    pub hide_date: bool,
+    pub show_date: bool,
     pub utc: bool,
     pub hour12: bool,
     pub center: bool,
