@@ -18,7 +18,9 @@ pub struct GeneralConfig {
     pub show_seconds: bool,
     pub utc: bool,
     pub format_12h: bool,
+    pub center: bool,
     pub merdiem: MeridiemConfig,
+    pub font: String,
 }
 impl Default for GeneralConfig {
     fn default() -> Self {
@@ -28,7 +30,9 @@ impl Default for GeneralConfig {
             show_seconds: false,
             utc: false,
             format_12h: false,
+            center: true,
             merdiem: MeridiemConfig::default(),
+            font: "digital".to_string(),
         }
     }
 }
