@@ -1,7 +1,4 @@
-use std::fmt::Display;
-
-use chrono::{DateTime, Offset, TimeZone, Timelike};
-use color_eyre::eyre::Result;
+use chrono::Timelike;
 use ratatui::layout::Rect;
 
 use crate::font::Font;

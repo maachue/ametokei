@@ -6,7 +6,7 @@ use ratatui::layout::Rect;
 use crate::state::timer::Meridiem;
 
 #[derive(Clone)]
-pub struct Date(String);
+pub struct Date(pub String);
 impl Date {
     pub fn from_date_time<Tz: TimeZone>(time: DateTime<Tz>, format: &str) -> Self
     where

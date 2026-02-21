@@ -123,7 +123,7 @@ impl State {
         };
 
         let (timer_w, timer_h) = TimerState::get_size(padding, show_sec, current_font);
-        let (date_w, date_h) = if show_date { (1, 1) } else { (0, 0) };
+        let (date_w, date_h) = if show_date { (timer_w, 1) } else { (0, 0) };
 
         let padding_w = if !center {
             0
