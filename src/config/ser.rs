@@ -4,7 +4,7 @@ use color_eyre::eyre::Result;
 use ratatui::style::Color;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 pub struct Config {
     pub general: GeneralConfig,
     pub performance: PerformanceConfig,
@@ -69,6 +69,14 @@ impl Default for PerformanceConfig {
 pub struct FontConfig {
     pub spacing_width_between_digits: u16,
     pub spacing_between_timer_and_date: u16,
+}
+impl Default for FontConfig {
+    fn default() -> Self {
+        Self {
+            spacing_between_timer_and_date: 1,
+            spacing_width_between_digits: 1,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]

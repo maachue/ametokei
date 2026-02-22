@@ -37,14 +37,13 @@ impl Layouted {
         font: &Font,
         date: Option<&str>,
     ) -> Result<Self, LayoutErr> {
-        
         let (timer_w, timer_h) = TimerState::get_size(spacing, show_sec, font);
         let date_w = if let Some(date) = date {
             date.width() as u16
         } else {
             0
         };
-        
+
         if timer_h > size.width || timer_w > size.height {
             return Err(LayoutErr::SizeTerm {
                 context: Cow::Borrowed("font"),

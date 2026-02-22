@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use ratatui::style::Color;
 
 #[derive(clap::Parser)]
@@ -21,6 +23,10 @@ pub struct Cli {
     pub hour12: bool,
     #[arg(short = 'C', long)]
     pub color: Option<Color>,
-    // #[arg(long, value_parser = clap::value_parser!(PathBuf))]
-    // pub config: Option<PathBuf>,
+    #[arg(long, value_parser = clap::value_parser!(PathBuf))]
+    pub config: Option<PathBuf>,
+    #[arg(long, conflicts_with = "config")]
+    pub no_config: bool,
+    #[arg(long)]
+    pub generate_config: Option<Option<PathBuf>>,
 }
