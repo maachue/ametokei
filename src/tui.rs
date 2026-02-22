@@ -59,6 +59,13 @@ impl Tui {
         let do_tick = self.frame_rate != self.tick_rate;
 
         let task = tokio::spawn(async move {
+            macro_rules! tired {
+                ($send:expr) => {
+                    if event_tx.send($send).is_err() {
+                        break;
+                    }
+                };
+            }
             event_tx.send(Event::Init).unwrap();
             Self::waiting_time_to_sync();
 
@@ -80,31 +87,32 @@ impl Tui {
                                 match evt {
                                     CrosstermEvent::Key(key) => {
                                             if key.kind == KeyEventKind::Press {
-                                                event_tx.send(Event::Key(key)).unwrap();
+                                                // event_tx.send(Event::Key(key)).unwrap();
+                                                tired!(Event::Key(key));
                                             }
                                     },
                                     CrosstermEvent::Resize(w, h) => {
-                                        event_tx.send(Event::Resize(w, h)).unwrap();
+                                        tired!(Event::Resize(w, h));
                                     },
                                     _ => ()
                                 }
                             },
                             Some(Err(_)) => {
-                                event_tx.send(Event::Error).unwrap()
+                                tired!(Event::Error);
                             },
                             _ => (),
                         }
                     },
                     _ = tick_delay => {
                         if do_tick {
-                            event_tx.send(Event::Tick).unwrap();
+                            tired!(Event::Tick);
                         }
                     },
                     _ = render_delay => {
-                        event_tx.send(Event::Render).unwrap();
+                        tired!(Event::Render);
                     },
                     _ = timer_delay => {
-                        event_tx.send(Event::Timer).unwrap();
+                        tired!(Event::Timer);
                     }
                 }
             }

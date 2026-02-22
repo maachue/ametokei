@@ -74,7 +74,7 @@ impl TimerState {
             (current_font.width * digit)
                 + (current_font.colon.width * colons)
                 + (need_padding * padding.0),
-            current_font.height + (padding.1 * 2),
+            current_font.height + (padding.1),
         )
     }
 }

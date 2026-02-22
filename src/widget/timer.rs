@@ -62,11 +62,7 @@ impl<'a> Widget for TimerWidget<'a> {
     where
         Self: Sized,
     {
-        let [
-            _, /* padding height */
-            area,
-            _, /* padding height */
-        ] = Layout::new(
+        let [area, _ /* spacing height */] = Layout::new(
             ratatui::layout::Direction::Vertical,
             Constraint::from_lengths([
                 self.state.spacing.1,
@@ -77,7 +73,7 @@ impl<'a> Widget for TimerWidget<'a> {
         .areas(self.state.area);
 
         if self.state.show_sec {
-            let [hours, colon, _ /* padding width */, minutes] = Layout::new(
+            let [hours, colon, _ /* spacing width */, minutes] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([
                     (self.font.width + self.state.spacing.0) * 2,
@@ -95,10 +91,10 @@ impl<'a> Widget for TimerWidget<'a> {
             let [
                 hours,
                 colon,
-                _, /* padding width */
+                _, /* spacing width */
                 minutes,
                 colon1,
-                _, /* padding width */
+                _, /* spacing width */
                 seconds,
             ] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
