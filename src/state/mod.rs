@@ -10,7 +10,7 @@ use self::{
     date::DateState,
     timer::{Timer, TimerState},
 };
-use crate::font::Font;
+use crate::{config::MinimalConfig, font::Font};
 
 #[derive(PartialEq, Eq, Copy, Clone)]
 pub enum ShouldRender {
@@ -102,5 +102,48 @@ impl State {
                 format.map(|t| local.format(t).to_string()),
             )
         }
+    }
+
+    pub fn on_resize(
+        &mut self,
+        width: u16,
+        height: u16,
+        config: &crate::config::MinimalConfig,
+    ) -> Result<()> {
+        let rect = Rect {
+            x: 0,
+            y: 0,
+            width,
+            height,
+        };
+
+        let layouted = crate::widget::Layouted::get(
+            rect,
+            config.spacing,
+            config.center,
+            config.sec,
+            &self.font,
+            self.date.as_deref(),
+        )
+        .with_suggestion(|| "Maybe make the terminal size a bit bigger?")?;
+
+        self.timer_state = TimerState {
+            area: layouted.timer,
+            spacing: config.spacing,
+            show_sec: config.show_date,
+        };
+
+        if let Some(date) = layouted.date
+            && let Some(date_state) = &mut self.date_state
+        {
+            date_state.area = date;
+        }
+
+        Ok(())
+    }
+
+    pub fn tick_timer(&mut self, config: &MinimalConfig) {
+        (self.timer, self.date) =
+            Self::get_time(config.utc, self.format_date.as_deref(), config.hour12);
     }
 }

@@ -64,7 +64,7 @@ impl Layouted {
             0
         };
         let padding_h = if center {
-            size.width.saturating_sub(main_h) / 2
+            size.height.saturating_sub(main_h) / 2
         } else {
             0
         };

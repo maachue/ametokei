@@ -9,3 +9,93 @@ pub struct Font {
     pub height: u16,
     pub colon: Colon,
 }
+impl Font {
+    pub fn digital() -> Self {
+        Self {
+            width: 6,
+            height: 5,
+            digits: [
+                vec![
+                    "██████".to_string(),
+                    "██  ██".to_string(),
+                    "██  ██".to_string(),
+                    "██  ██".to_string(),
+                    "██████".to_string(),
+                ],
+                vec![
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                ],
+                vec![
+                    "██████".to_string(),
+                    "    ██".to_string(),
+                    "██████".to_string(),
+                    "██    ".to_string(),
+                    "██████".to_string(),
+                ],
+                vec![
+                    "██████".to_string(),
+                    "    ██".to_string(),
+                    "██████".to_string(),
+                    "    ██".to_string(),
+                    "██████".to_string(),
+                ],
+                vec![
+                    "██  ██".to_string(),
+                    "██  ██".to_string(),
+                    "██████".to_string(),
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                ],
+                vec![
+                    "██████".to_string(),
+                    "██    ".to_string(),
+                    "██████".to_string(),
+                    "    ██".to_string(),
+                    "██████".to_string(),
+                ],
+                vec![
+                    "██████".to_string(),
+                    "██    ".to_string(),
+                    "██████".to_string(),
+                    "██  ██".to_string(),
+                    "██████".to_string(),
+                ],
+                vec![
+                    "██████".to_string(),
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                    "    ██".to_string(),
+                ],
+                vec![
+                    "██████".to_string(),
+                    "██  ██".to_string(),
+                    "██████".to_string(),
+                    "██  ██".to_string(),
+                    "██████".to_string(),
+                ],
+                vec![
+                    "██████".to_string(),
+                    "██  ██".to_string(),
+                    "██████".to_string(),
+                    "    ██".to_string(),
+                    "██████".to_string(),
+                ],
+            ],
+            colon: Colon {
+                width: 4,
+                lines: vec![
+                    "    ".to_string(),
+                    " ██ ".to_string(),
+                    "    ".to_string(),
+                    " ██ ".to_string(),
+                    "    ".to_string(),
+                ],
+            },
+        }
+    }
+}

@@ -1,6 +1,7 @@
 use std::{collections::HashMap, path::Path};
 
 use color_eyre::eyre::Result;
+use ratatui::style::Color;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
@@ -14,6 +15,7 @@ pub struct Config {
 #[derive(Serialize, Deserialize)]
 pub struct GeneralConfig {
     pub format: String,
+    pub color: Color,
     pub hide_date: bool,
     pub show_seconds: bool,
     pub utc: bool,
@@ -27,6 +29,7 @@ impl Default for GeneralConfig {
         Self {
             format: "%Y-%m-%d".to_string(),
             hide_date: false,
+            color: Color::White,
             show_seconds: false,
             utc: false,
             format_12h: false,
@@ -37,7 +40,7 @@ impl Default for GeneralConfig {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct MeridiemConfig {
     pub am: String,
     pub pm: String,
