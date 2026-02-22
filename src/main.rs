@@ -98,7 +98,12 @@ fn config_gen(maybe_default: Option<&Path>) -> Result<()> {
         get_config().ok_or_eyre("Failed to determine default config directory.")?
     };
 
-    std::fs::write(config, toml::to_string_pretty(&default_config)?)?;
+    if let Some(parent) = config.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+
+    std::fs::write(&config, toml::to_string_pretty(&default_config)?)?;
+    println!("Complete generate config at: {}", config.display());
     Ok(())
 }
 
@@ -109,10 +114,14 @@ async fn main() -> Result<()> {
     let cmd = cli::Cli::parse();
 
     if let Some(maybe_default /* None -> Default */) = &cmd.generate_config {
-        config_gen(maybe_default.as_deref())?
+        config_gen(maybe_default.as_deref())?;
+        return Ok(()) // do not run clock
     }
 
     let (config, font) = config_load(&cmd)?;
+
+    println!("{:?}", cmd);
+    println!("{:?}", config);
 
     let mut app = App::new(config, font)?;
     app.run().await?;

@@ -6,6 +6,7 @@ mod ser;
 use ratatui::style::Color;
 pub use ser::*;
 
+#[derive(Debug)]
 /// minimal config
 pub struct MinimalConfig {
     pub format_date: String,
@@ -37,13 +38,24 @@ impl Default for MinimalConfig {
 }
 impl MinimalConfig {
     pub fn cmd(&mut self, cmd: &crate::cli::Cli) {
-        self.show_date = !cmd.hide_date;
-        self.hour12 = cmd.hour12;
-        self.center = cmd.center;
-        self.sec = cmd.show_seconds;
+        if let Some(hide_date) = cmd.hide_date {
+            self.show_date = !hide_date
+        }
+
+        if let Some(hour12) = cmd.hour12 {
+            self.hour12 = hour12
+        }
+
+        if let Some(center) = cmd.center {
+            self.center = center
+        }
 
         if let Some(tps) = cmd.tps {
             self.tps = tps
+        }
+
+        if let Some(sec) = cmd.show_seconds {
+            self.sec = sec
         }
 
         if let Some(fps) = cmd.fps {
