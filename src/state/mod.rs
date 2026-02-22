@@ -70,7 +70,7 @@ impl State {
         {
             Some(DateState {
                 area,
-                padding: area.width.saturating_sub(date.width() as u16),
+                spacing: area.width.saturating_sub(date.width() as u16) / 2,
             })
         } else {
             None
@@ -127,11 +127,7 @@ impl State {
         )
         .with_suggestion(|| "Maybe make the terminal size a bit bigger?")?;
 
-        self.timer_state = TimerState {
-            area: layouted.timer,
-            spacing: config.spacing,
-            show_sec: config.show_date,
-        };
+        self.timer_state.area = layouted.timer;
 
         if let Some(date) = layouted.date
             && let Some(date_state) = &mut self.date_state

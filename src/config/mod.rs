@@ -40,6 +40,7 @@ impl MinimalConfig {
         self.show_date = !cmd.hide_date;
         self.hour12 = cmd.hour12;
         self.center = cmd.center;
+        self.sec = cmd.show_seconds;
 
         if let Some(tps) = cmd.tps {
             self.tps = tps

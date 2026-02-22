@@ -14,6 +14,8 @@ pub struct Cli {
     #[arg(short = 'd', long)]
     pub hide_date: bool,
     #[arg(short, long)]
+    pub show_seconds: bool,
+    #[arg(short, long)]
     pub center: bool,
     #[arg(short = 'T', long)]
     pub hour12: bool,

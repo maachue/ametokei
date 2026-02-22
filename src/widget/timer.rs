@@ -64,15 +64,11 @@ impl<'a> Widget for TimerWidget<'a> {
     {
         let [area, _ /* spacing height */] = Layout::new(
             ratatui::layout::Direction::Vertical,
-            Constraint::from_lengths([
-                self.state.spacing.1,
-                self.font.height,
-                self.state.spacing.1,
-            ]),
+            Constraint::from_lengths([self.font.height, self.state.spacing.1]),
         )
         .areas(self.state.area);
 
-        if self.state.show_sec {
+        if !self.state.show_sec {
             let [hours, colon, _ /* spacing width */, minutes] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([

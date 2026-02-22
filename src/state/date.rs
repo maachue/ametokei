@@ -13,5 +13,5 @@ where
 
 pub struct DateState {
     pub area: Rect,
-    pub padding: u16, /* width only */
+    pub spacing: u16, /* width only */
 }

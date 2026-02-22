@@ -14,9 +14,9 @@ impl<'a> Widget for DateWidget<'a> {
         Self: Sized,
     {
         buf.set_string(
-            self.state.padding,
+             self.state.area.left() + self.state.spacing,
             self.state.area.top(),
-            &self.date,
+            self.date,
             self.color,
         );
     }

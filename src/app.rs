@@ -102,13 +102,13 @@ impl App {
 impl Drop for App {
     fn drop(&mut self) {
         if crossterm::terminal::is_raw_mode_enabled().unwrap() {
-            let _ = disable_raw_mode();
             let _ = execute!(
                 self.terminal.backend_mut(),
                 LeaveAlternateScreen,
                 DisableMouseCapture,
                 cursor::Show
             );
+            let _ = disable_raw_mode();
         }
     }
 }

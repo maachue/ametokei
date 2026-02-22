@@ -30,7 +30,7 @@ pub struct Timer {
     pub hours: u8,
     pub minutes: u8,
     pub seconds: u8,
-    pub meridiem: Option<Meridiem>,
+    pub _meridiem: Option<Meridiem>,
 }
 impl Timer {
     pub fn from_time_like<T: Timelike>(time: T, hour12: bool) -> Self {
@@ -46,7 +46,7 @@ impl Timer {
             hours,
             minutes: time.minute() as u8,
             seconds: time.second() as u8,
-            meridiem,
+            _meridiem: meridiem,
         }
     }
 }
@@ -58,7 +58,7 @@ pub struct TimerState {
 }
 impl TimerState {
     pub fn get_size(
-        padding: (u16, u16),
+        spacing: (u16, u16),
         show_sec: bool,
         current_font: &Font,
     ) -> (u16 /* width */, u16 /* height */) {
@@ -68,13 +68,13 @@ impl TimerState {
         // 12:12:12
         // 12:12
 
-        let need_padding = if show_sec { 7 } else { 1 };
+        let need_spacing = if show_sec { 7 } else { 4 };
 
         (
             (current_font.width * digit)
                 + (current_font.colon.width * colons)
-                + (need_padding * padding.0),
-            current_font.height + (padding.1),
+                + (need_spacing * spacing.0),
+            current_font.height + (spacing.1),
         )
     }
 }
