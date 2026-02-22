@@ -1,7 +1,3 @@
-<!-- # Tenki(天気) -->
-
-<!-- tty-clock with weather effect written in Rust and powerd by [ratatui](https://github.com/ratatui-org/ratatui) and tenki means weather in japanese -->
-
 # Jikan(時間)
 
 _[**unofficial** fork from [Tenki(天気)](https://github.com/ckaznable/tenki)]_
@@ -60,25 +56,38 @@ paru -S tenki
 CLI will override the configuration.
 
 ```
-sorry, current in WIP
-```
-
-<!-- ```
-Usage: tenki [OPTIONS]
+Usage: jikan [OPTIONS]
 
 Options:
-      --mode <MODE>                [default: rain] [possible values: rain, snow, meteor, disable]
-      --timer-mode <TIMER_MODE>    [possible values: dvd]
-      --timer-color <TIMER_COLOR>  color of the effect. [red, green, blue] [default: white]
-  -f, --fps <FPS>                  frame per second [default: 60]
-  -t, --tps <TPS>                  tick per second [default: 60]
-  -l, --level <LEVEL>              effect level, The lower, the stronger [4-1000]
-      --wind <WIND>                wind mode. [random, disable, only-right, only-left, right, left] [default: random]
-      --show-fps                   show fps at right-top in screen
-      --blink-colon                blinking colon of timer
-  -h, --help                       Print help
-  -V, --version                    Print version
-``` -->
+  -t, --tps <TPS>
+          tick per seconds [default: 60]
+  -f, --fps <FPS>
+          frame per seconds [default: 60]
+      --date <DATE>
+          set the date format [default: "%Y-%m-%d"]
+  -u, --utc <UTC>
+          use UTC time [possible values: true, false]
+  -D, --hide-date <HIDE_DATE>
+          hide date [possible values: true, false]
+  -s, --show-seconds <SHOW_SECONDS>
+          show seconds [possible values: true, false]
+  -c, --center <CENTER>
+          center of the terminal [possible values: true, false]
+      --hour12 <HOUR12>
+          set the hour in 12h format [possible values: true, false]
+      --timer-color <TIMER_COLOR>
+          color of the timer & date
+      --config <CONFIG>
+          custom config path
+      --no-config
+          no-config mode
+      --generate-config [<GENERATE_CONFIG>]
+          create config
+  -h, --help
+          Print help
+  -V, --version
+          Print version
+```
 
 ### Config
 

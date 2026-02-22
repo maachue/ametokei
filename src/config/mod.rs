@@ -62,7 +62,7 @@ impl MinimalConfig {
             self.fps = fps
         }
 
-        if let Some(color) = cmd.color {
+        if let Some(color) = cmd.timer_color {
             self.color = color
         }
 
