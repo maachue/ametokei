@@ -91,6 +91,9 @@ Options:
 
 ### Config
 
+UNIX: `~/.config/jikan/config.toml`
+Windows: `%APPDATA%\\maachue\\jikan\\config\\config.toml`
+
 ```toml
 [general]
 format = "%Y-m-%d" # max length: 256 characters
