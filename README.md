@@ -91,7 +91,7 @@ Options:
 
 ### Config
 
-UNIX: `~/.config/jikan/config.toml`
+UNIX: `~/.config/jikan/config.toml`  
 Windows: `%APPDATA%\\maachue\\jikan\\config\\config.toml`
 
 ```toml
