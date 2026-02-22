@@ -12,7 +12,7 @@ pub mod timer;
 #[derive(thiserror::Error, Debug)]
 pub enum LayoutErr {
     #[error(
-        "The size of terminal is too small for {context} (expected: > ({ex_w};{ex_h}); current ({term_w};{term_h})"
+        "The size of terminal is too small for {context} (expected: > ({ex_w};{ex_h}); current ({term_w};{term_h}))"
     )]
     SizeTerm {
         context: Cow<'static, str>,
@@ -44,7 +44,7 @@ impl Layouted {
             0
         };
 
-        if timer_h > size.width || timer_w > size.height {
+        if timer_w > size.width || timer_h > size.height {
             return Err(LayoutErr::SizeTerm {
                 context: Cow::Borrowed("font"),
                 ex_w: timer_w,

@@ -54,7 +54,7 @@ impl App {
             if let Some(evt) = self.tui.next().await {
                 match evt {
                     Event::Init => {}
-                    Event::Quit | Event::Error => self.quit = true,
+                    /* Event::Quit | */ Event::Error => self.quit = true,
                     Event::Render => self.on_render()?,
                     Event::Tick => {}
                     Event::Timer => self.on_timer(),

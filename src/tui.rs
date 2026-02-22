@@ -8,7 +8,7 @@ use crossterm::event::{Event as CrosstermEvent, KeyEvent, KeyEventKind};
 
 pub enum Event {
     Init,
-    Quit,
+    // Quit,
     Error,
     Render,
     Tick,

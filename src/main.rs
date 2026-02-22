@@ -66,7 +66,7 @@ fn config_load(cmd: &cli::Cli) -> Result<(MinimalConfig, Font)> {
 
     let (mut cfg, font) = if let Some(path) = config_path {
         let user = Config::from_path(&path)?;
-        let (_, cfg, font) = user.convert()?;
+        let (cfg, font) = user.convert()?;
         (cfg, font)
     } else {
         (MinimalConfig::default(), Font::digital())
@@ -115,13 +115,10 @@ async fn main() -> Result<()> {
 
     if let Some(maybe_default /* None -> Default */) = &cmd.generate_config {
         config_gen(maybe_default.as_deref())?;
-        return Ok(()) // do not run clock
+        return Ok(()); // do not run clock
     }
 
     let (config, font) = config_load(&cmd)?;
-
-    println!("{:?}", cmd);
-    println!("{:?}", config);
 
     let mut app = App::new(config, font)?;
     app.run().await?;

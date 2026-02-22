@@ -36,3 +36,4 @@ codegen-units = 3
 lto = true
 opt-level = 3
 strip = true
+panci = "abort"

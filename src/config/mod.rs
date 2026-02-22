@@ -1,12 +1,10 @@
 pub mod font;
 pub mod handle;
-pub mod path;
 mod ser;
 
 use ratatui::style::Color;
 pub use ser::*;
 
-#[derive(Debug)]
 /// minimal config
 pub struct MinimalConfig {
     pub format_date: String,
@@ -19,6 +17,7 @@ pub struct MinimalConfig {
     pub fps: u8,
     pub spacing: (u16, u16),
     pub color: Color,
+    pub mer: MeridiemConfig,
 }
 impl Default for MinimalConfig {
     fn default() -> Self {
@@ -33,6 +32,7 @@ impl Default for MinimalConfig {
             fps: 60,
             spacing: (1, 1),
             color: Color::White,
+            mer: MeridiemConfig::default(),
         }
     }
 }

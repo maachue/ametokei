@@ -1,9 +1,6 @@
 use color_eyre::eyre::{OptionExt, Result};
 
-use crate::{
-    config::MeridiemConfig,
-    font::{Colon, Font},
-};
+use crate::font::Font;
 
 use super::{Config as UserConfig, MinimalConfig};
 
@@ -23,12 +20,13 @@ impl From<UserConfig> for MinimalConfig {
                 user.fontconfig.spacing_width_between_digits,
                 user.fontconfig.spacing_between_timer_and_date,
             ),
+            mer: user.general.merdiem,
         }
     }
 }
 
 impl UserConfig {
-    pub fn convert(mut self /* move */) -> Result<(MeridiemConfig, MinimalConfig, Font)> {
+    pub fn convert(mut self /* move */) -> Result<(MinimalConfig, Font)> {
         let font = match self.general.font.as_str() {
             "digital" => Font::digital(),
             _ => {
@@ -46,8 +44,6 @@ impl UserConfig {
             }
         };
 
-        let meridiem = self.general.merdiem.clone();
-
-        Ok((meridiem, self.into(), font))
+        Ok((self.into(), font))
     }
 }
