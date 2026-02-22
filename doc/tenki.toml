@@ -1,0 +1,21 @@
+[general]
+format = "%a, %h %d %Y"
+color = "White"
+hide_date = false
+show_seconds = true
+utc = false
+format_12h = true
+center = true
+font = "tenki"
+
+[general.merdiem]
+am = "[SA]"
+pm = "[CH]"
+
+[performance]
+tps = 60
+fps = 60
+
+[fontconfig]
+spacing_width_between_digits = 1
+spacing_between_timer_and_date = 1

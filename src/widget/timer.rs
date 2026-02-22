@@ -36,19 +36,9 @@ impl<'a> TimerWidget<'a> {
     }
 
     pub fn render_decimal(&self, d: u8, area: Rect, buf: &mut Buffer) {
-        let [
-            num1,
-            _, /* padding width */
-            num2,
-            _, /* padding width */
-        ] = Layout::new(
+        let [num1, _ /* padding width */, num2] = Layout::new(
             ratatui::layout::Direction::Horizontal,
-            Constraint::from_lengths([
-                self.font.width,
-                self.state.spacing.0,
-                self.font.width,
-                self.state.spacing.0,
-            ]),
+            Constraint::from_lengths([self.font.width, self.state.spacing.0, self.font.width]),
         )
         .areas(area);
 
@@ -69,13 +59,20 @@ impl<'a> Widget for TimerWidget<'a> {
         .areas(self.state.area);
 
         if !self.state.show_sec {
-            let [hours, colon, _ /* spacing width */, minutes] = Layout::new(
+            let [
+                hours,
+                _, /* spacing width */
+                colon,
+                _, /* spacing width */
+                minutes,
+            ] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([
-                    (self.font.width + self.state.spacing.0) * 2,
+                    self.font.width * 2 + self.state.spacing.0,
+                    self.state.spacing.0,
                     self.font.colon.width,
                     self.state.spacing.0,
-                    (self.font.width + self.state.spacing.0) * 2,
+                    self.font.width * 2 + self.state.spacing.0,
                 ]),
             )
             .areas(area);
@@ -86,22 +83,26 @@ impl<'a> Widget for TimerWidget<'a> {
         } else {
             let [
                 hours,
+                _, /* spacing width */
                 colon,
                 _, /* spacing width */
                 minutes,
+                _, /* spacing width */
                 colon1,
                 _, /* spacing width */
                 seconds,
             ] = Layout::new(
                 ratatui::layout::Direction::Horizontal,
                 Constraint::from_lengths([
-                    (self.font.width + self.state.spacing.0) * 2,
+                    self.font.width * 2 + self.state.spacing.0,
+                    self.state.spacing.0,
                     self.font.colon.width,
                     self.state.spacing.0,
-                    (self.font.width + self.state.spacing.0) * 2,
+                    self.font.width * 2 + self.state.spacing.0,
+                    self.state.spacing.0,
                     self.font.colon.width,
                     self.state.spacing.0,
-                    (self.font.width + self.state.spacing.0) * 2,
+                    self.font.width * 2 + self.state.spacing.0,
                 ]),
             )
             .areas(area);

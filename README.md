@@ -11,7 +11,7 @@ tty-clock with customizable configuration written in Rust and powered by [ratatu
 > [!NOTE]
 > Current project doesn't support all features available in Tenki.
 
-<!-- ![demo](./doc/demo.gif) -->
+![demo](./doc/demo.gif)
 
 ## Installation
 
@@ -89,7 +89,7 @@ hide_date = false
 utc = false
 show_seconds = false
 format_12h = false
-# color = "white"
+color = "White"
 # blink = false
 # timer_mode = "none"
 font = "digital" # default
@@ -132,4 +132,3 @@ colon = ["colon", "colon", "colon"]
 ## LICENSE
 
 [MIT](./LICENSE)
-

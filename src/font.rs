@@ -98,4 +98,92 @@ impl Font {
             },
         }
     }
+    pub fn tenki() -> Self {
+        Self {
+            width: 5,
+            height: 5,
+            digits: [
+                vec![
+                    "█████".to_string(),
+                    "██ ██".to_string(),
+                    "██ ██".to_string(),
+                    "██ ██".to_string(),
+                    "█████".to_string(),
+                ],
+                vec![
+                    "   ██".to_string(),
+                    "   ██".to_string(),
+                    "   ██".to_string(),
+                    "   ██".to_string(),
+                    "   ██".to_string(),
+                ],
+                vec![
+                    "█████".to_string(),
+                    "   ██".to_string(),
+                    "█████".to_string(),
+                    "██   ".to_string(),
+                    "█████".to_string(),
+                ],
+                vec![
+                    "█████".to_string(),
+                    "   ██".to_string(),
+                    "█████".to_string(),
+                    "   ██".to_string(),
+                    "█████".to_string(),
+                ],
+                vec![
+                    "██ ██".to_string(),
+                    "██ ██".to_string(),
+                    "█████".to_string(),
+                    "   ██".to_string(),
+                    "   ██".to_string(),
+                ],
+                vec![
+                    "█████".to_string(),
+                    "██   ".to_string(),
+                    "█████".to_string(),
+                    "   ██".to_string(),
+                    "█████".to_string(),
+                ],
+                vec![
+                    "█████".to_string(),
+                    "██   ".to_string(),
+                    "█████".to_string(),
+                    "██ ██".to_string(),
+                    "█████".to_string(),
+                ],
+                vec![
+                    "█████".to_string(),
+                    "██ ██".to_string(),
+                    "   ██".to_string(),
+                    "   ██".to_string(),
+                    "   ██".to_string(),
+                ],
+                vec![
+                    "█████".to_string(),
+                    "██ ██".to_string(),
+                    "█████".to_string(),
+                    "██ ██".to_string(),
+                    "█████".to_string(),
+                ],
+                vec![
+                    "█████".to_string(),
+                    "██ ██".to_string(),
+                    "█████".to_string(),
+                    "   ██".to_string(),
+                    "█████".to_string(),
+                ],
+            ],
+            colon: Colon {
+                width: 1,
+                lines: vec![
+                    " ".to_string(),
+                    "▀".to_string(),
+                    " ".to_string(),
+                    "▀".to_string(),
+                    " ".to_string(),
+                ],
+            },
+        }
+    }
 }

@@ -29,6 +29,7 @@ impl UserConfig {
     pub fn convert(mut self /* move */) -> Result<(MinimalConfig, Font)> {
         let font = match self.general.font.as_str() {
             "digital" => Font::digital(),
+            "tenki" => Font::tenki(),
             _ => {
                 let font_name = self.general.font.clone();
 
