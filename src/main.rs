@@ -10,14 +10,11 @@ mod tui;
 mod ui;
 mod widget;
 
-use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
-use tracing_appender::rolling;
+#[cfg(feature = "tracing")]
+fn init_tracing() {
+    use tracing_appender::rolling;
+    use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
 
-#[tokio::main]
-async fn main() -> Result<()> {
-    color_eyre::install()?;
-
-    // ---------- tracing init ----------
     let file_appender = rolling::never(".", "tui.log");
     let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
 
@@ -30,7 +27,14 @@ async fn main() -> Result<()> {
                 .with_thread_ids(true)
         )
         .init();
-    // ----------------------------------
+}
+
+#[tokio::main]
+async fn main() -> Result<()> {
+    color_eyre::install()?;
+
+    #[cfg(feature = "tracing")]
+    init_tracing();
 
     let font = crate::font::Font::tenki();
     let mut rt_config = crate::config::RuntimeConfig::default();
