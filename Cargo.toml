@@ -4,25 +4,42 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-chrono = "0.4.43"
+# CLI
 clap = { version = "4.5.60", features = ["derive"] }
-color-eyre = "0.6.5"
+
+# TUI core
 crossterm = { version = "0.29.0", features = ["event-stream"] }
-futures = "0.3.32"
-itertools = "0.14.0"
 ratatui = { version = "0.30.0", features = ["serde"] }
-serde = { version = "1.0.228", features = ["derive"] }
+itertools = "0.14.0"
 tinyvec = "1.10.0"
-tokio = { version = "1.49.0", features = ["full"] }
-toml = "1.0.3"
+
+# time
+chrono = "0.4.43"
+
+# truely width for UTF-8
 unicode-width = "0.2.2"
 
-tracing = {version = "0.1.44", optional = true}
-tracing-appender = {version = "0.2.4", optional = true}
-tracing-subscriber = {version = "0.3.22", optional = true}
+# async
+futures = "0.3.32"
+tokio = { version = "1.49.0", features = ["full"] }
+
+# config
+serde = { version = "1.0.228", features = ["derive"] }
+toml = "1.0.3"
+directories = "6.0.0"
+
+# pertty error handler
+color-eyre = "0.6.5"
+
+# log (for debug)
+tracing = { version = "0.1.44", optional = true }
+tracing-appender = { version = "0.2.4", optional = true }
+tracing-subscriber = { version = "0.3.22", optional = true }
 
 [features]
 default = []
+
+# debug only
 tracing = ["dep:tracing", "dep:tracing-appender", "dep:tracing-subscriber"]
 
 [profile.release]
