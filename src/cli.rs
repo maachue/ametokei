@@ -50,6 +50,9 @@ pub struct Cli {
     #[arg(long)]
     pub timer_mode: Option<TimerMode>,
 
+    #[arg(long)]
+    pub font: Option<String>,
+
     // ------------ CLI ------------
     /// custom config path
     #[arg(long, value_parser = clap::value_parser!(PathBuf))]

@@ -3,7 +3,12 @@ use std::path::{Path, PathBuf};
 use clap::Parser;
 use color_eyre::Result;
 
-use crate::{app::App, cli::Cli, config::RuntimeConfig, font::Font};
+use crate::{
+    app::App,
+    cli::Cli,
+    config::{RuntimeConfig, user::UserConfig},
+    font::Font,
+};
 
 mod app;
 mod cli;
@@ -73,16 +78,39 @@ fn resolve_path(cmd: &Cli) -> Result<Option<PathBuf>> {
 fn config_load(cmd: Cli) -> Result<(RuntimeConfig, Font)> {
     if cmd.no_config {
         let mut cfg = RuntimeConfig::default();
+
+        let font = if let Some(font_name) = &cmd.font {
+            Font::get(font_name, None)?
+        } else {
+            Font::tenki()
+        };
+
         cfg.cli_override(cmd);
-        return Ok((cfg, Font::tenki()));
+
+
+        return Ok((cfg, font));
     }
 
     let config_path = resolve_path(&cmd)?;
 
     let (mut cfg, font) = if let Some(path) = config_path {
-        (RuntimeConfig::default(), Font::tenki())
+        let mut user = UserConfig::from_path(&path)?;
+
+        if let Some(custom_font) = &cmd.font {
+            user.general.font = custom_font.clone()
+        };
+
+        let font = Font::get(&user.general.font, user.font.as_mut())?;
+
+        (user.into(), font)
     } else {
-        (RuntimeConfig::default(), Font::tenki())
+        let font = if let Some(font_name) = &cmd.font {
+            Font::get(font_name, None)?
+        } else {
+            Font::tenki()
+        };
+
+        (RuntimeConfig::default(), font)
     };
 
     cfg.cli_override(cmd);
@@ -90,35 +118,37 @@ fn config_load(cmd: Cli) -> Result<(RuntimeConfig, Font)> {
     Ok((cfg, font))
 }
 
-// fn config_gen(maybe_default: Option<&Path>) -> Result<()> {
-//     let default_config = Config::default();
-//
-//     let config = if let Some(config) = maybe_default {
-//         if config.exists() {
-//             return Err(color_eyre::eyre::eyre!(
-//                 "Cannot create config file the path already exists: {}",
-//                 config.display()
-//             ));
-//         }
-//         if config.is_dir() {
-//             return Err(color_eyre::eyre::eyre!(
-//                 "Cannot create config file because the path is a directory: {}",
-//                 config.display()
-//             ));
-//         }
-//         config.to_path_buf()
-//     } else {
-//         get_config().ok_or_eyre("Failed to determine default config directory.")?
-//     };
-//
-//     if let Some(parent) = config.parent() {
-//         std::fs::create_dir_all(parent)?;
-//     }
-//
-//     std::fs::write(&config, toml::to_string_pretty(&default_config)?)?;
-//     println!("Complete generate config at: {}", config.display());
-//     Ok(())
-// }
+fn config_gen(maybe_default: Option<&Path>) -> Result<()> {
+    use color_eyre::eyre::OptionExt;
+
+    let default_config = UserConfig::default();
+
+    let config = if let Some(config) = maybe_default {
+        if config.exists() {
+            return Err(color_eyre::eyre::eyre!(
+                "Cannot create config file the path already exists: {}",
+                config.display()
+            ));
+        }
+        if config.is_dir() {
+            return Err(color_eyre::eyre::eyre!(
+                "Cannot create config file because the path is a directory: {}",
+                config.display()
+            ));
+        }
+        config.to_path_buf()
+    } else {
+        get_config().ok_or_eyre("Failed to determine default config directory.")?
+    };
+
+    if let Some(parent) = config.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+
+    std::fs::write(&config, toml::to_string_pretty(&default_config)?)?;
+    println!("Complete generate config at: {}", config.display());
+    Ok(())
+}
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -130,23 +160,11 @@ async fn main() -> Result<()> {
     let cli = Cli::parse();
 
     if let Some(maybe_default) = &cli.generate_config {
-        // config_gen(maybe_default.as_deref())?;
-        // return Ok(());
-        todo!();
+        config_gen(maybe_default.as_deref())?;
+        return Ok(());
     }
 
     let (rt_config, font) = config_load(cli)?;
-
-    // test config edit here
-    // rt_config.blink_colon = true;
-    // rt_config.center = true;
-    // rt_config.show_seconds = true;
-    // rt_config.format_date = Some("%a, %h %d %Y".to_string());
-    // rt_config.hour12h = true;
-    // // rt_config.utc = true;
-    // rt_config.timer_mode = Some(crate::state::clock::TimerRenderMode::Dvd(
-    //     crate::state::Direction::default(),
-    // ));
 
     let mut app = App::new(rt_config, font)?;
     app.run().await?;

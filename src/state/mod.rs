@@ -249,10 +249,15 @@ impl State {
     }
 
     pub fn tick(&mut self) -> ShouldRender {
-        self.frame = if self.frame == u64::MAX { 0 } else { self.frame.saturating_add(1) };
+        self.frame = if self.frame == u64::MAX {
+            0
+        } else {
+            self.frame.saturating_add(1)
+        };
         // self.seed = self.rng.next_u64();
 
         // self.weather.on_frame(&mut self.rb, self.seed, self.frame)
-            self.clock_state.on_frame(&mut self.rb, self.seed, self.frame)
+        self.clock_state
+            .on_frame(&mut self.rb, self.seed, self.frame)
     }
 }

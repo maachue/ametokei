@@ -45,6 +45,7 @@ dependencies = [
  "itertools",
  "ratatui",
  "serde",
+ "thiserror 2.0.18",
  "tinyvec",
  "tokio",
  "toml",

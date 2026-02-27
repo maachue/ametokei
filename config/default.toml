@@ -1,0 +1,22 @@
+[general]
+show_seconds = false
+format_date = "%Y-%m-%d"
+blink_colon = false
+color = "White"
+center = false
+hour12h = false
+utc = false
+hide_date = false
+font = "tenki"
+
+[general.meridiem]
+am = " [AM]"
+pm = " [PM]"
+
+[performance]
+tps = 60
+fps = 60
+
+[fontconfig]
+spacing_horizontal = 1
+spacing_vertical = 1

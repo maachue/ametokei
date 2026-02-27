@@ -63,7 +63,7 @@ impl Clock {
     }
 }
 
-#[derive(Clone, clap::ValueEnum)]
+#[derive(Clone, clap::ValueEnum, serde::Serialize, serde::Deserialize)]
 pub enum TimerMode {
     Dvd,
 }

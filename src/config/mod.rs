@@ -1,6 +1,9 @@
 use ratatui::style::Color;
 
+pub mod font;
+pub mod handle;
 pub mod meridiem;
+pub mod user;
 
 use crate::{cli::Cli, state::clock::TimerRenderMode};
 
