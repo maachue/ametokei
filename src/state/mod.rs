@@ -6,6 +6,9 @@ use tinyvec::ArrayVec;
 
 pub mod buffer;
 pub mod clock;
+pub mod enum_state;
+
+pub use enum_state::*;
 
 use crate::{config::RuntimeConfig, font::Font};
 
@@ -200,6 +203,7 @@ pub struct State {
     // rng: SmallRng,
     seed: u64,
     pub font: Font,
+    pub enough_size: EnoughSize
 }
 impl State {
     pub fn new(size: Rect, config: &RuntimeConfig, font: Font) -> Self {
@@ -216,6 +220,7 @@ impl State {
             rb: RenderBuffer::new(size),
             frame: 0,
             clock,
+            enough_size: clock_state.enough,
             clock_state,
             seed: 0,
             font,
@@ -244,6 +249,7 @@ impl State {
         };
 
         self.clock_state = ClockState::new(area, self.clock.date.as_deref(), config, &self.font);
+        self.enough_size = self.clock_state.enough;
 
         Ok(())
     }

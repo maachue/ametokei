@@ -87,71 +87,67 @@ impl<'a> Widget for ClockWidget<'a> {
     where
         Self: Sized,
     {
-        if self.state.is_enough {
-            let layout = Layout::new(
-                Direction::Vertical,
-                [
-                    Constraint::Length(self.font.height),
-                    Constraint::Length(self.state.spacing.1),
-                    Constraint::Min(0),
-                ],
+        let layout = Layout::new(
+            Direction::Vertical,
+            [
+                Constraint::Length(self.font.height),
+                Constraint::Length(self.state.spacing.1),
+                Constraint::Min(0),
+            ],
+        )
+        .split(self.state.area);
+
+        if self.state.show_seconds {
+            let [hour_digit, _, colon1, _, min_digit, _, colon2, _, sec_digit] = Layout::new(
+                Direction::Horizontal,
+                Constraint::from_lengths([
+                    self.font.width * 2 + self.state.spacing.0,
+                    self.state.spacing.0,
+                    self.font.colon_width,
+                    self.state.spacing.0,
+                    self.font.width * 2 + self.state.spacing.0,
+                    self.state.spacing.0,
+                    self.font.colon_width,
+                    self.state.spacing.0,
+                    self.font.width * 2 + self.state.spacing.0,
+                ]),
             )
-            .split(self.state.area);
+            .areas(layout[0]);
 
-            if self.state.show_seconds {
-                let [hour_digit, _, colon1, _, min_digit, _, colon2, _, sec_digit] = Layout::new(
-                    Direction::Horizontal,
-                    Constraint::from_lengths([
-                        self.font.width * 2 + self.state.spacing.0,
-                        self.state.spacing.0,
-                        self.font.colon_width,
-                        self.state.spacing.0,
-                        self.font.width * 2 + self.state.spacing.0,
-                        self.state.spacing.0,
-                        self.font.colon_width,
-                        self.state.spacing.0,
-                        self.font.width * 2 + self.state.spacing.0,
-                    ]),
-                )
-                .areas(layout[0]);
+            self.render_decimal(self.time.hours, hour_digit, buf);
+            self.render_decimal(self.time.minutes, min_digit, buf);
+            self.render_decimal(self.time.seconds, sec_digit, buf);
 
-                self.render_decimal(self.time.hours, hour_digit, buf);
-                self.render_decimal(self.time.minutes, min_digit, buf);
-                self.render_decimal(self.time.seconds, sec_digit, buf);
-
-                if self.state.colon_show {
-                    self.render_colon(colon1, buf);
-                    self.render_colon(colon2, buf);
-                }
-            } else {
-                let [hour_digit, _, colon, _, min_digit] = Layout::new(
-                    Direction::Horizontal,
-                    Constraint::from_lengths([
-                        self.font.width * 2 + self.state.spacing.0,
-                        self.state.spacing.0,
-                        self.font.colon_width,
-                        self.state.spacing.0,
-                        self.font.width * 2 + self.state.spacing.0,
-                    ]),
-                )
-                .areas(layout[0]);
-
-                self.render_decimal(self.time.hours, hour_digit, buf);
-                self.render_decimal(self.time.minutes, min_digit, buf);
-
-                if self.state.colon_show {
-                    self.render_colon(colon, buf);
-                }
-            }
-
-            if let Some(date_str) = &self.time.date {
-                let date = layout[2];
-                let x = date.width.saturating_sub(date_str.width() as u16) / 2;
-
-                buf.set_string(date.left() + x, date.top(), date_str, self.color);
+            if self.state.colon_show {
+                self.render_colon(colon1, buf);
+                self.render_colon(colon2, buf);
             }
         } else {
-            buf.set_string(buf.area.left() + (buf.area.width.saturating_sub(SIZE) / 2), buf.area.top() + (buf.area.height.saturating_sub(1) / 2), NOT_ENOUGH_SIZE, Color::White);
+            let [hour_digit, _, colon, _, min_digit] = Layout::new(
+                Direction::Horizontal,
+                Constraint::from_lengths([
+                    self.font.width * 2 + self.state.spacing.0,
+                    self.state.spacing.0,
+                    self.font.colon_width,
+                    self.state.spacing.0,
+                    self.font.width * 2 + self.state.spacing.0,
+                ]),
+            )
+            .areas(layout[0]);
+
+            self.render_decimal(self.time.hours, hour_digit, buf);
+            self.render_decimal(self.time.minutes, min_digit, buf);
+
+            if self.state.colon_show {
+                self.render_colon(colon, buf);
+            }
+        }
+
+        if let Some(date_str) = &self.time.date {
+            let date = layout[2];
+            let x = date.width.saturating_sub(date_str.width() as u16) / 2;
+
+            buf.set_string(date.left() + x, date.top(), date_str, self.color);
         }
     }
 }

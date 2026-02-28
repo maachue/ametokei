@@ -2,7 +2,7 @@ use chrono::{DateTime, Local, TimeZone, Timelike, Utc};
 use ratatui::layout::Rect;
 use unicode_width::UnicodeWidthStr;
 
-use super::{Direction, EachFrameImpl, Position, ShouldRender};
+use super::{Direction, EachFrameImpl, Position, ShouldRender, EnoughSize};
 use crate::{
     config::{MeridiemConfig, RuntimeConfig},
     font::Font,
@@ -101,7 +101,7 @@ pub struct ClockState {
     pub colon_show: bool,
     pub spacing: (u16, u16),
     pub show_seconds: bool,
-    pub is_enough: bool,
+    pub enough: EnoughSize,
 }
 impl ClockState {
     pub fn new(
@@ -111,7 +111,7 @@ impl ClockState {
         font: &Font,
     ) -> Self {
         let boundary = area;
-        let (area, is_enough) = Self::get_area(area, date_formatted, config, font);
+        let (area, enough) = Self::get_area(area, date_formatted, config, font);
 
         Self {
             area,
@@ -121,7 +121,7 @@ impl ClockState {
             colon_show: true,
             spacing: config.spacing,
             show_seconds: config.show_seconds,
-            is_enough,
+            enough
         }
     }
 
@@ -152,7 +152,7 @@ impl ClockState {
         date_formatted: Option<&str>,
         config: &RuntimeConfig,
         font: &Font,
-    ) -> (Rect, bool) {
+    ) -> (Rect, EnoughSize) {
         let date_w = if let Some(date_formatted) = date_formatted {
             date_formatted.width() as u16
         } else {
@@ -176,8 +176,6 @@ impl ClockState {
             timer_h
         };
 
-        let enough = !(area.width < clock_w || area.height < clock_h);
-
         let x = if config.center {
             area.width.saturating_sub(clock_w) / 2
         } else {
@@ -189,15 +187,19 @@ impl ClockState {
             0
         };
 
-        (
-            Rect {
-                x,
-                y,
-                width: clock_w,
-                height: clock_h,
-            },
-            enough,
-        )
+        let enough = !(area.width < clock_w || area.height < clock_h);
+
+        let enough = match enough {
+            true => EnoughSize::Enough,
+            false => EnoughSize::Not(clock_w, clock_h)
+        };
+
+        (Rect {
+            x,
+            y,
+            width: clock_w,
+            height: clock_h,
+        }, enough)
     }
 
     fn get_area_with_pos(&self, pos: Position) -> Rect {
@@ -213,7 +215,7 @@ impl ClockState {
     }
 
     fn handle_mode(&mut self, frame: u64) -> ShouldRender {
-        if self.mode.is_none() || !self.is_enough {
+        if self.mode.is_none() || !self.enough.is_enough() {
             return ShouldRender::Skip;
         }
 
