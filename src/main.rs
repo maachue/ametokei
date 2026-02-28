@@ -20,6 +20,7 @@ mod ui;
 mod widget;
 
 #[cfg(feature = "tracing")]
+#[inline(always)]
 fn init_tracing() {
     use tracing_appender::rolling;
     use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
@@ -86,7 +87,6 @@ fn config_load(cmd: Cli) -> Result<(RuntimeConfig, Font)> {
         };
 
         cfg.cli_override(cmd);
-
 
         return Ok((cfg, font));
     }

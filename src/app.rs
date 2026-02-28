@@ -29,7 +29,7 @@ impl App {
 
         let backend = CrosstermBackend::new(stdout);
         let terminal = Terminal::new(backend)?;
-        let state = State::new(terminal.size()?.into(), &config, font)?;
+        let state = State::new(terminal.size()?.into(), &config, font);
 
         Ok(Self {
             terminal,

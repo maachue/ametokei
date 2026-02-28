@@ -202,7 +202,7 @@ pub struct State {
     pub font: Font,
 }
 impl State {
-    pub fn new(size: Rect, config: &RuntimeConfig, font: Font) -> Result<Self> {
+    pub fn new(size: Rect, config: &RuntimeConfig, font: Font) -> Self {
         let clock = Clock::new(
             config.utc,
             config.hour12h,
@@ -210,16 +210,16 @@ impl State {
             &config.meridiem,
         );
 
-        let clock_state = ClockState::new(size, clock.date.as_deref(), config, &font)?;
+        let clock_state = ClockState::new(size, clock.date.as_deref(), config, &font);
 
-        Ok(Self {
+        Self {
             rb: RenderBuffer::new(size),
             frame: 0,
             clock,
             clock_state,
             seed: 0,
             font,
-        })
+        }
     }
 
     pub fn tick_timer(&mut self, config: &RuntimeConfig) {
@@ -243,7 +243,7 @@ impl State {
             height,
         };
 
-        self.clock_state = ClockState::new(area, self.clock.date.as_deref(), config, &self.font)?;
+        self.clock_state = ClockState::new(area, self.clock.date.as_deref(), config, &self.font);
 
         Ok(())
     }

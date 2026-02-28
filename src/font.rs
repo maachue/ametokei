@@ -205,7 +205,9 @@ impl Font {
                 use color_eyre::eyre::OptionExt;
 
                 let fonts = fonts.take().ok_or_eyre("User fonts are not defined.")?;
-                let user_font = fonts.remove(name).ok_or_eyre(format!("Font `{}` not found", name))?;
+                let user_font = fonts
+                    .remove(name)
+                    .ok_or_eyre(format!("Font `{}` not found", name))?;
 
                 Ok(user_font.try_into()?)
             }
