@@ -1,7 +1,11 @@
 //! msg based on btop++!
 //! Thanks to btop++ team so much.
 
-use ratatui::{style::{Color, Style}, text::{Line, Span}, widgets::Widget};
+use ratatui::{
+    style::{Color, Modifier, Style},
+    text::{Line, Span},
+    widgets::Widget,
+};
 
 pub struct NotEnoughWidget {
     pub needed_w: u16,
@@ -33,17 +37,28 @@ impl Widget for NotEnoughWidget {
 
         let line = Line::from(vec![
             Span::raw("Width = "),
-            Span::styled(
-                format!("{}", self.needed_w),
-                Style::default().fg(fg_width),
-            ),
+            Span::styled(format!("{}", self.needed_w), Style::default().fg(fg_width)),
             Span::raw(" Height = "),
-            Span::styled(
-                format!("{}", self.needed_h),
-                Style::default().fg(fg_height),
-            ),
+            Span::styled(format!("{}", self.needed_h), Style::default().fg(fg_height)),
         ]);
 
-        buf.set_line((buf.area.width / 2) - 10, (buf.area.height / 2) - 1, &line, buf.area.width);
+        buf.set_line(
+            (buf.area.width / 2) - 10,
+            (buf.area.height / 2) - 1,
+            &line,
+            buf.area.width,
+        );
+        buf.set_string(
+            (buf.area.width / 2) - 12,
+            (buf.area.height / 2) + 1,
+            "Needed for current config:",
+            Modifier::BOLD,
+        );
+        buf.set_string(
+            (buf.area.width / 2) - 10,
+            (buf.area.height / 2) + 2,
+            format!("Width = {} Height = {}", self.needed_w, self.needed_h),
+            Modifier::BOLD,
+        );
     }
 }
