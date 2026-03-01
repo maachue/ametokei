@@ -15,7 +15,7 @@ and powered by [ratatui](https://github.com/ratatui-org/ratatui)
 ## Roadmap
 
 - [ ] Improve configuration  
-- [ ] Improve not enough size  
+- [x] Improve not enough size  
 - [ ] Clean & modular code
 
 ## Installation
@@ -212,4 +212,3 @@ Options:
 ## LICENSE
 
 [MIT](./LICENSE)
-
