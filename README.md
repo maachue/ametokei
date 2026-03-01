@@ -14,9 +14,9 @@ and powered by [ratatui](https://github.com/ratatui-org/ratatui)
 
 ## Roadmap
 
-[ ] Improve configuration
-[ ] Improve not enough size
-[ ] Clean & modular code
+- [ ] Improve configuration  
+- [ ] Improve not enough size  
+- [ ] Clean & modular code
 
 ## Installation
 
@@ -159,7 +159,7 @@ nine = [
 ]
 ```
 
-Wants to see an exampe? [Here](./config/demo.toml)
+Wants to see an example? [Here](./config/demo.toml)
 
 ### CLI
 
@@ -212,3 +212,4 @@ Options:
 ## LICENSE
 
 [MIT](./LICENSE)
+
