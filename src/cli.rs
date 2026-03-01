@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use ratatui::style::Color;
 
-use crate::state::clock::TimerMode;
+use crate::state::{Mode, clock::TimerMode, wind::WindMode};
 
 #[derive(clap::Parser, Clone)]
 #[command(author, version, about, long_about = None)]
@@ -50,8 +50,20 @@ pub struct Cli {
     #[arg(long)]
     pub timer_mode: Option<TimerMode>,
 
+    /// font name
     #[arg(long)]
     pub font: Option<String>,
+
+    /// wind mode
+    #[arg(long)]
+    pub wind: Option<WindMode>,
+
+    /// effect level, The lower, the stronger
+    #[arg(long)]
+    pub level: Option<u16>,
+
+    #[arg(long)]
+    pub bg_mode: Option<Mode>,
 
     // ------------ CLI ------------
     /// custom config path

@@ -153,7 +153,9 @@ impl Position {
     }
 }
 
-#[derive(Copy, Clone, Default, clap::ValueEnum, PartialEq, Eq)]
+#[derive(
+    Copy, Clone, Default, clap::ValueEnum, serde::Deserialize, serde::Serialize, PartialEq, Eq,
+)]
 pub enum Mode {
     #[default]
     Rain,

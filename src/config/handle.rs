@@ -24,7 +24,7 @@ impl From<UserConfig> for RuntimeConfig {
                 value.fontconfig.spacing_vertical,
             ),
             timer_mode: value.general.timer_mode.map(|e| e.into()),
-            weather_info: super::WeatherInfomation::default(),
+            weather_info: value.general.weather,
         }
     }
 }

@@ -5,7 +5,7 @@ use std::path::Path;
 use ratatui::style::Color;
 use serde::{Deserialize, Serialize};
 
-use crate::state::clock::TimerMode;
+use crate::{config::WeatherInfomation, state::clock::TimerMode};
 
 use super::MeridiemConfig;
 
@@ -41,6 +41,7 @@ pub struct GeneralConfig {
     pub hide_date: bool,
     pub timer_mode: Option<TimerMode>,
     pub font: String,
+    pub weather: WeatherInfomation
 }
 impl Default for GeneralConfig {
     fn default() -> Self {
@@ -56,6 +57,7 @@ impl Default for GeneralConfig {
             meridiem: MeridiemConfig::default(),
             timer_mode: None,
             font: "tenki".to_string(),
+            weather: WeatherInfomation::default()
         }
     }
 }

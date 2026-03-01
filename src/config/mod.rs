@@ -12,7 +12,7 @@ use crate::{
 
 pub use self::meridiem::MeridiemConfig;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, serde::Serialize, serde::Deserialize)]
 pub struct WeatherInfomation {
     pub wind: WindMode,
     pub mode: Mode,
@@ -84,6 +84,13 @@ impl RuntimeConfig {
 
         if let Some(timer_mode) = cli.timer_mode {
             self.timer_mode = Some(timer_mode.into());
+        }
+
+        self.weather_info.wind = cli.wind.unwrap_or(self.weather_info.wind);
+        self.weather_info.mode = cli.bg_mode.unwrap_or(self.weather_info.mode);
+
+        if let Some(level) = cli.level {
+            self.weather_info.level = Some(level);
         }
     }
 }

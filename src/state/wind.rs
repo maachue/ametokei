@@ -1,6 +1,8 @@
 use super::{EachFrameImpl, ShouldRender, buffer::RenderBuffer};
 
-#[derive(Clone, Copy, Default, Eq, PartialEq)]
+#[derive(
+    Clone, Copy, Default, Eq, PartialEq, serde::Serialize, serde::Deserialize, clap::ValueEnum,
+)]
 pub enum WindMode {
     #[default]
     Random,
@@ -10,19 +12,6 @@ pub enum WindMode {
 }
 
 impl WindMode {
-    #[allow(dead_code)]
-    pub fn from_str(s: &str) -> Result<Self, &'static str> {
-        match s {
-            "random" => Ok(WindMode::Random),
-            "disable" => Ok(WindMode::Disable),
-            "right" | "only-right" => Ok(WindMode::OnlyRight),
-            "left" | "only-left" => Ok(WindMode::OnlyLeft),
-            _ => Err(
-                "Invalid parameter, only accept random, disable, only-right, only-left, right or left.",
-            ),
-        }
-    }
-
     pub fn without_random(self) -> Self {
         match self {
             WindMode::Random => Self::Disable,
