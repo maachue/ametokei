@@ -1,0 +1,27 @@
+[general]
+show_seconds = true
+format_date = "%a, %h %d %Y"
+blink_colon = true
+color = "White"
+center = true
+hour12h = true
+utc = true
+hide_date = false
+font = "tenki"
+
+[general.meridiem]
+am = " [SA]"
+pm = " [CH]"
+
+[general.weather]
+wind = "Disable"
+level = 125
+mode = "Rain"
+
+[performance]
+tps = 60
+fps = 60
+
+[fontconfig]
+spacing_horizontal = 1
+spacing_vertical = 1
