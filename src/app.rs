@@ -58,7 +58,7 @@ where
                     Event::Tick => self.on_tick(),
                     Event::Timer => self.on_timer(),
                     Event::Key(key) => self.on_key(key),
-                    Event::Resize(w, h) => self.on_resize(w, h)?,
+                    Event::Resize(w, h) => self.on_resize(w, h),
                 }
 
                 if self.quit {
@@ -103,10 +103,9 @@ where
         }
     }
 
-    fn on_resize(&mut self, w: u16, h: u16) -> Result<()> {
+    fn on_resize(&mut self, w: u16, h: u16) {
+        self.state.on_resize(w, h, &self.config);
         self.should_render = ShouldRender::Render;
-
-        self.state.on_resize(w, h, &self.config)
     }
 }
 impl<T> Drop for App<T> {

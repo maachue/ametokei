@@ -1,6 +1,5 @@
 use std::{cell::RefCell, rc::Rc};
 
-use color_eyre::eyre::Result;
 use rand::{Rng, rngs::SmallRng};
 use ratatui::layout::Rect;
 use tinyvec::ArrayVec;
@@ -248,7 +247,7 @@ impl<T: EachFrameImpl> State<T> {
         }
     }
 
-    pub fn on_resize(&mut self, width: u16, height: u16, config: &RuntimeConfig) -> Result<()> {
+    pub fn on_resize(&mut self, width: u16, height: u16, config: &RuntimeConfig) {
         let area = Rect {
             x: 0,
             y: 0,
@@ -256,10 +255,10 @@ impl<T: EachFrameImpl> State<T> {
             height,
         };
 
+        self.rb = RenderBuffer::new(area);
+
         self.clock_state = ClockState::new(area, self.clock.date.as_deref(), config, &self.font);
         self.enough_size = self.clock_state.enough;
-
-        Ok(())
     }
 
     pub fn tick(&mut self) -> ShouldRender {
