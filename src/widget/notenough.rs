@@ -2,9 +2,10 @@
 //! Thanks to btop++ team so much.
 
 use ratatui::{
+    layout::{Alignment, Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::{Line, Span},
-    widgets::Widget,
+    widgets::{Paragraph, Widget},
 };
 
 pub struct NotEnoughWidget {
@@ -16,49 +17,49 @@ impl Widget for NotEnoughWidget {
     where
         Self: Sized,
     {
-        buf.set_string(
-            (buf.area.width / 2) - 11,
-            (buf.area.height / 2) - 2,
-            "Terminal size too small:",
-            Color::Reset,
-        );
+        let area = buf.area;
 
-        let fg_width = if buf.area.width < self.needed_w {
+        let fg_width = if area.width < self.needed_w {
+            Color::Red
+        } else {
+            Color::Green
+        };
+        let fg_height = if area.height < self.needed_h {
             Color::Red
         } else {
             Color::Green
         };
 
-        let fg_height = if buf.area.height < self.needed_h {
-            Color::Red
-        } else {
-            Color::Green
-        };
+        let text = vec![
+            Line::from("Terminal size too small:").alignment(Alignment::Center),
+            Line::from(vec![
+                Span::raw("Width = "),
+                Span::styled(format!("{}", area.width), Style::default().fg(fg_width)),
+                Span::raw(" Height = "),
+                Span::styled(format!("{}", area.height), Style::default().fg(fg_height)),
+            ])
+            .alignment(Alignment::Center),
+            Line::from(""),
+            Line::from("Needed for current config:")
+                .style(Modifier::BOLD)
+                .alignment(Alignment::Center),
+            Line::from(format!(
+                "Width = {} Height = {}",
+                self.needed_w, self.needed_h
+            ))
+            .style(Modifier::BOLD)
+            .alignment(Alignment::Center),
+        ];
 
-        let line = Line::from(vec![
-            Span::raw("Width = "),
-            Span::styled(format!("{}", self.needed_w), Style::default().fg(fg_width)),
-            Span::raw(" Height = "),
-            Span::styled(format!("{}", self.needed_h), Style::default().fg(fg_height)),
-        ]);
+        let chunks = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints([
+                Constraint::Fill(1),
+                Constraint::Length(5),
+                Constraint::Fill(1),
+            ])
+            .split(area);
 
-        buf.set_line(
-            (buf.area.width / 2) - 10,
-            (buf.area.height / 2) - 1,
-            &line,
-            buf.area.width,
-        );
-        buf.set_string(
-            (buf.area.width / 2) - 12,
-            (buf.area.height / 2) + 1,
-            "Needed for current config:",
-            Modifier::BOLD,
-        );
-        buf.set_string(
-            (buf.area.width / 2) - 10,
-            (buf.area.height / 2) + 2,
-            format!("Width = {} Height = {}", self.needed_w, self.needed_h),
-            Modifier::BOLD,
-        );
+        Paragraph::new(text).render(chunks[1], buf);
     }
 }
