@@ -10,6 +10,7 @@ pub enum WindMode {
 }
 
 impl WindMode {
+    #[allow(dead_code)]
     pub fn from_str(s: &str) -> Result<Self, &'static str> {
         match s {
             "random" => Ok(WindMode::Random),

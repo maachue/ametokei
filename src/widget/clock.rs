@@ -12,9 +12,6 @@ use crate::{
     state::clock::{Clock, ClockState},
 };
 
-const NOT_ENOUGH_SIZE: &str = "not enough size, pls resize to continue";
-const SIZE: u16 = 39;
-
 pub struct ClockWidget<'a> {
     pub state: &'a ClockState,
     pub time: &'a Clock,

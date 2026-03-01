@@ -11,7 +11,6 @@ use crate::{
     font::Font,
     state::{EachFrameImpl, ShouldRender, State},
     tui::Tui,
-    weather::Weather,
     widget::AsWeatherWidget,
 };
 

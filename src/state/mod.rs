@@ -1,7 +1,7 @@
 use std::{cell::RefCell, rc::Rc};
 
 use color_eyre::eyre::Result;
-use rand::{Rng, SeedableRng, rngs::SmallRng};
+use rand::{Rng, rngs::SmallRng};
 use ratatui::layout::Rect;
 use tinyvec::ArrayVec;
 
