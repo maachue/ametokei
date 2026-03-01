@@ -9,27 +9,32 @@ use ratatui::{Terminal, prelude::CrosstermBackend};
 use crate::{
     config::RuntimeConfig,
     font::Font,
-    state::{ShouldRender, State},
+    state::{EachFrameImpl, ShouldRender, State},
     tui::Tui,
+    weather::Weather,
+    widget::AsWeatherWidget,
 };
 
-pub struct App {
+pub struct App<T> {
     terminal: Terminal<CrosstermBackend<std::io::Stdout>>,
     tui: Tui,
-    state: State,
+    state: State<T>,
     quit: bool,
     should_render: ShouldRender,
     config: RuntimeConfig,
 }
-impl App {
-    pub fn new(config: RuntimeConfig, font: Font) -> Result<Self> {
+impl<T> App<T>
+where
+    T: EachFrameImpl + AsWeatherWidget,
+{
+    pub fn new(config: RuntimeConfig, weather: T, font: Font) -> Result<Self> {
         enable_raw_mode()?;
         let mut stdout = std::io::stdout();
         execute!(stdout, EnterAlternateScreen)?;
 
         let backend = CrosstermBackend::new(stdout);
         let terminal = Terminal::new(backend)?;
-        let state = State::new(terminal.size()?.into(), &config, font);
+        let state = State::new(terminal.size()?.into(), weather, &config, font);
 
         Ok(Self {
             terminal,
@@ -105,7 +110,7 @@ impl App {
         self.state.on_resize(w, h, &self.config)
     }
 }
-impl Drop for App {
+impl<T> Drop for App<T> {
     fn drop(&mut self) {
         if crossterm::terminal::is_raw_mode_enabled().unwrap() {
             let _ = execute!(

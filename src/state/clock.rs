@@ -2,7 +2,7 @@ use chrono::{DateTime, Local, TimeZone, Timelike, Utc};
 use ratatui::layout::Rect;
 use unicode_width::UnicodeWidthStr;
 
-use super::{Direction, EachFrameImpl, Position, ShouldRender, EnoughSize};
+use super::{Direction, EachFrameImpl, EnoughSize, Position, ShouldRender};
 use crate::{
     config::{MeridiemConfig, RuntimeConfig},
     font::Font,
@@ -121,7 +121,7 @@ impl ClockState {
             colon_show: true,
             spacing: config.spacing,
             show_seconds: config.show_seconds,
-            enough
+            enough,
         }
     }
 
@@ -191,15 +191,18 @@ impl ClockState {
 
         let enough = match enough {
             true => EnoughSize::Enough,
-            false => EnoughSize::Not(clock_w, clock_h)
+            false => EnoughSize::Not(clock_w, clock_h),
         };
 
-        (Rect {
-            x,
-            y,
-            width: clock_w,
-            height: clock_h,
-        }, enough)
+        (
+            Rect {
+                x,
+                y,
+                width: clock_w,
+                height: clock_h,
+            },
+            enough,
+        )
     }
 
     fn get_area_with_pos(&self, pos: Position) -> Rect {

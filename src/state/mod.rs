@@ -1,12 +1,16 @@
 use std::{cell::RefCell, rc::Rc};
 
 use color_eyre::eyre::Result;
+use rand::{Rng, SeedableRng, rngs::SmallRng};
 use ratatui::layout::Rect;
 use tinyvec::ArrayVec;
 
 pub mod buffer;
 pub mod clock;
+pub mod dropping;
 pub mod enum_state;
+pub mod tail;
+pub mod wind;
 
 pub use enum_state::*;
 
@@ -194,19 +198,19 @@ impl Mode {
     }
 }
 
-pub struct State {
+pub struct State<T> {
     pub rb: RenderBuffer,
     pub clock: Clock,
     pub clock_state: ClockState,
-    // pub weather: T,
-    frame: u64,
-    // rng: SmallRng,
-    seed: u64,
     pub font: Font,
-    pub enough_size: EnoughSize
+    pub enough_size: EnoughSize,
+    pub weather: T,
+    frame: u64,
+    rng: SmallRng,
+    seed: u64,
 }
-impl State {
-    pub fn new(size: Rect, config: &RuntimeConfig, font: Font) -> Self {
+impl<T: EachFrameImpl> State<T> {
+    pub fn new(size: Rect, weather: T, config: &RuntimeConfig, font: Font) -> Self {
         let clock = Clock::new(
             config.utc,
             config.hour12h,
@@ -223,7 +227,9 @@ impl State {
             enough_size: clock_state.enough,
             clock_state,
             seed: 0,
+            weather,
             font,
+            rng: rand::make_rng(),
         }
     }
 
@@ -260,10 +266,12 @@ impl State {
         } else {
             self.frame.saturating_add(1)
         };
-        // self.seed = self.rng.next_u64();
+        self.seed = self.rng.next_u64();
 
-        // self.weather.on_frame(&mut self.rb, self.seed, self.frame)
-        self.clock_state
+        self.weather
             .on_frame(&mut self.rb, self.seed, self.frame)
+            .or(self
+                .clock_state
+                .on_frame(&mut self.rb, self.seed, self.frame))
     }
 }

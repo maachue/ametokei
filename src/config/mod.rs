@@ -5,9 +5,28 @@ pub mod handle;
 pub mod meridiem;
 pub mod user;
 
-use crate::{cli::Cli, state::clock::TimerRenderMode};
+use crate::{
+    cli::Cli,
+    state::{Mode, clock::TimerRenderMode, wind::WindMode},
+};
 
 pub use self::meridiem::MeridiemConfig;
+
+#[derive(Copy, Clone)]
+pub struct WeatherInfomation {
+    pub wind: WindMode,
+    pub mode: Mode,
+    pub level: Option<u16>,
+}
+impl Default for WeatherInfomation {
+    fn default() -> Self {
+        Self {
+            wind: WindMode::Disable,
+            mode: Mode::Rain,
+            level: None,
+        }
+    }
+}
 
 pub struct RuntimeConfig {
     pub show_seconds: bool,
@@ -22,6 +41,7 @@ pub struct RuntimeConfig {
     pub meridiem: MeridiemConfig,
     pub spacing: (u16, u16),
     pub timer_mode: Option<TimerRenderMode>,
+    pub weather_info: WeatherInfomation,
 }
 impl Default for RuntimeConfig {
     fn default() -> Self {
@@ -38,6 +58,7 @@ impl Default for RuntimeConfig {
             meridiem: MeridiemConfig::default(),
             spacing: (1, 1),
             timer_mode: None,
+            weather_info: WeatherInfomation::default(),
         }
     }
 }

@@ -1,3 +1,5 @@
+#![allow(clippy::manual_is_multiple_of)]
+
 use std::path::{Path, PathBuf};
 
 use clap::Parser;
@@ -17,6 +19,7 @@ mod font;
 mod state;
 mod tui;
 mod ui;
+mod weather;
 mod widget;
 
 #[cfg(feature = "tracing")]
@@ -166,7 +169,9 @@ async fn main() -> Result<()> {
 
     let (rt_config, font) = config_load(cli)?;
 
-    let mut app = App::new(rt_config, font)?;
+    let weather = weather::Weather::from(rt_config.weather_info); // copy
+
+    let mut app = App::new(rt_config, weather, font)?;
     app.run().await?;
 
     Ok(())

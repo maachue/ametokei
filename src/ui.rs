@@ -1,12 +1,20 @@
 use ratatui::{Frame, style::Color};
 
-use crate::{state::{EnoughSize, State}, widget::{clock::ClockWidget, notenough::NotEnoughWidget}};
+use crate::{
+    state::{EachFrameImpl, EnoughSize, State},
+    widget::{AsWeatherWidget, WeatherWidget, clock::ClockWidget, notenough::NotEnoughWidget},
+};
 
-pub fn ui(f: &mut Frame, state: &mut State, color: Color) {
+pub fn ui<T: EachFrameImpl + AsWeatherWidget>(f: &mut Frame, state: &mut State<T>, color: Color) {
     let area = f.area();
 
-
     if state.enough_size.is_enough() {
+        f.render_stateful_widget(
+            WeatherWidget::new(state.weather.as_weather_widget()),
+            area,
+            &mut state.rb,
+        );
+
         f.render_widget(
             ClockWidget {
                 state: &state.clock_state,
