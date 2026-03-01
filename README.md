@@ -8,6 +8,16 @@ and powered by [ratatui](https://github.com/ratatui-org/ratatui)
 
 ![demo](./doc/demo.gif)
 
+## Credits
+
+- [ckaznable](https://github.com/ckaznable) - async, weather background, struct.
+
+## Roadmap
+
+[ ] Improve configuration
+[ ] Improve not enough size
+[ ] Clean & modular code
+
 ## Installation
 
 ### Install from Cargo
@@ -42,11 +52,16 @@ center = false
 hour12h = false
 utc = false
 hide_date = false
-font = "_digital"
+font = "FONTNAME"
+# default: `tenki` (default, from tenki), `digital` (from tty-clock)
 
 [general.meridiem]
 am = " [AM]"
 pm = " [PM]"
+
+[general.weather]
+wind = "Disable"
+mode = "Rain"
 
 [performance]
 tps = 60
@@ -56,11 +71,13 @@ fps = 60
 spacing_horizontal = 1
 spacing_vertical = 1
 
-[font._digital]
+# Custom font
+[font.FONTNAME]
 colon_width = 4
 num_width = 6
 height = 5
 symbols = ['█', '!', '!', '!', '!']
+# improve the symbols later
 
 colon = [
 0,0,0,0,
@@ -142,10 +159,12 @@ nine = [
 ]
 ```
 
+Wants to see an exampe? [Here](./config/demo.toml)
+
 ### CLI
 
 ```
-Usage: ametokei[.exe] [OPTIONS]
+Usage: ametokei [OPTIONS]
 
 Options:
   -f, --fps <FPS>
@@ -171,7 +190,13 @@ Options:
       --timer-mode <TIMER_MODE>
           [possible values: dvd]
       --font <FONT>
-
+          font name
+      --wind <WIND>
+          wind mode [possible values: random, disable, only-right, only-left]
+      --level <LEVEL>
+          effect level, The lower, the stronger
+      --bg-mode <BG_MODE>
+          [possible values: rain, snow, meteor, disable]
       --config <CONFIG>
           custom config path
       --no-config
