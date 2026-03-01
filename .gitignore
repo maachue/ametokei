@@ -1,3 +1,4 @@
 /target
 tui.log
 massif.out.*
+heaptrack.*

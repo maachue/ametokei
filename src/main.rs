@@ -22,6 +22,27 @@ mod ui;
 mod weather;
 mod widget;
 
+pub fn install_panic_hook() {
+    use crossterm::{
+        execute,
+        terminal::{LeaveAlternateScreen, disable_raw_mode},
+    };
+
+    let hook = std::panic::take_hook();
+
+    std::panic::set_hook(Box::new(move |panic_info| {
+        let _ = execute!(
+            std::io::stdout(),
+            LeaveAlternateScreen,
+            crossterm::event::DisableMouseCapture,
+            crossterm::cursor::Show
+        );
+        let _ = disable_raw_mode();
+
+        hook(panic_info)
+    }));
+}
+
 #[cfg(feature = "tracing")]
 #[inline(always)]
 fn init_tracing() {
@@ -153,12 +174,13 @@ fn config_gen(maybe_default: Option<&Path>) -> Result<()> {
     Ok(())
 }
 
-#[tokio::main(flavor = "current_thread")]
+#[tokio::main]
 async fn main() -> Result<()> {
     color_eyre::install()?;
 
     #[cfg(feature = "tracing")]
     init_tracing();
+    install_panic_hook();
 
     let cli = Cli::parse();
 

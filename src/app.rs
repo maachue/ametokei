@@ -1,3 +1,5 @@
+use std::io::Stdout;
+
 use color_eyre::eyre::Result;
 use crossterm::{
     event::{DisableMouseCapture, KeyEvent},
@@ -15,7 +17,7 @@ use crate::{
 };
 
 pub struct App<T> {
-    terminal: Terminal<CrosstermBackend<std::io::Stdout>>,
+    pub terminal: Terminal<CrosstermBackend<Stdout>>,
     tui: Tui,
     state: State<T>,
     quit: bool,
@@ -31,8 +33,7 @@ where
         let mut stdout = std::io::stdout();
         execute!(stdout, EnterAlternateScreen)?;
 
-        let backend = CrosstermBackend::new(stdout);
-        let terminal = Terminal::new(backend)?;
+        let terminal = Terminal::new(CrosstermBackend::new(stdout))?;
         let state = State::new(terminal.size()?.into(), weather, &config, font);
 
         Ok(Self {
@@ -99,6 +100,8 @@ where
 
         match key.code {
             KeyCode::Esc | KeyCode::Char('q') | KeyCode::Char('Q') => self.quit = true,
+            #[cfg(debug_assertions)]
+            KeyCode::Backspace => panic!("panicked. Is terminal restore?"),
             _ => {}
         }
     }
