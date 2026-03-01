@@ -10,6 +10,7 @@ use crate::{config::WeatherInfomation, state::clock::TimerMode};
 use super::MeridiemConfig;
 
 #[derive(Default, Serialize, Deserialize)]
+#[serde(default, rename_all = "snake_case")]
 pub struct UserConfig {
     pub general: GeneralConfig,
     pub performance: PerformanceConfig,
@@ -29,6 +30,7 @@ impl UserConfig {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(default, rename_all = "snake_case")]
 pub struct GeneralConfig {
     pub show_seconds: bool,
     pub format_date: String,
@@ -41,7 +43,7 @@ pub struct GeneralConfig {
     pub hide_date: bool,
     pub timer_mode: Option<TimerMode>,
     pub font: String,
-    pub weather: WeatherInfomation
+    pub weather: WeatherInfomation,
 }
 impl Default for GeneralConfig {
     fn default() -> Self {
@@ -57,12 +59,13 @@ impl Default for GeneralConfig {
             meridiem: MeridiemConfig::default(),
             timer_mode: None,
             font: "tenki".to_string(),
-            weather: WeatherInfomation::default()
+            weather: WeatherInfomation::default(),
         }
     }
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(default, rename_all = "snake_case")]
 pub struct PerformanceConfig {
     pub tps: u8,
     pub fps: u8,
@@ -74,6 +77,7 @@ impl Default for PerformanceConfig {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(default, rename_all = "snake_case")]
 pub struct FontConfig {
     pub spacing_horizontal: u16,
     pub spacing_vertical: u16,

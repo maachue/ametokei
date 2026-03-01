@@ -13,6 +13,7 @@ use crate::{
 pub use self::meridiem::MeridiemConfig;
 
 #[derive(Copy, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(default, rename_all = "snake_case")]
 pub struct WeatherInfomation {
     pub wind: WindMode,
     pub mode: Mode,

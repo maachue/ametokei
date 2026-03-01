@@ -155,6 +155,7 @@ impl Position {
 #[derive(
     Copy, Clone, Default, clap::ValueEnum, serde::Deserialize, serde::Serialize, PartialEq, Eq,
 )]
+#[serde(rename_all = "snake_case")]
 pub enum Mode {
     #[default]
     Rain,

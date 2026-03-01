@@ -2,7 +2,7 @@
 show_seconds = true
 format_date = "%a, %h %d %Y"
 blink_colon = true
-color = "White"
+color = "white"
 center = true
 hour12h = true
 utc = true
@@ -14,9 +14,9 @@ am = " [SA]"
 pm = " [CH]"
 
 [general.weather]
-wind = "Disable"
+wind = "disable"
 level = 125
-mode = "Rain"
+mode = "rain"
 
 [performance]
 tps = 60

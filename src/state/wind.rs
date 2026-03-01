@@ -3,6 +3,7 @@ use super::{EachFrameImpl, ShouldRender, buffer::RenderBuffer};
 #[derive(
     Clone, Copy, Default, Eq, PartialEq, serde::Serialize, serde::Deserialize, clap::ValueEnum,
 )]
+#[serde(rename_all = "snake_case")]
 pub enum WindMode {
     #[default]
     Random,
