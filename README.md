@@ -75,8 +75,7 @@ spacing_vertical = 1
 colon_width = 4
 num_width = 6
 height = 5
-symbols = ['█', '!', '!', '!', '!']
-# improve the symbols later
+symbol_1 = '█'
 
 colon = [
 0,0,0,0,
