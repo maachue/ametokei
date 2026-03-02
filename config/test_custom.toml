@@ -7,7 +7,6 @@ center = false
 hour12h = false
 utc = false
 hide_date = false
-font = "_digital"
 
 [general.meridiem]
 am = " [AM]"
