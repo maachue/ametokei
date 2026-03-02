@@ -194,10 +194,34 @@ impl Font {
         }
     }
 
+    fn chue() -> Self {
+        Self {
+            width: 1,
+            colon_width: 1,
+            first_sym: '\0',
+            symbols: [None, None, None, None],
+            height: 1,
+            digits: [
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+                vec![],
+            ],
+        }
+    }
+
     pub fn get(name: &str, mut fonts: Option<&mut HashMap<String, SerializeFont>>) -> Result<Self> {
         match name {
             "digital" => Ok(Self::digital()),
             "tenki" => Ok(Self::tenki()),
+            "chue!" => Ok(Self::chue()),
             _ => {
                 use color_eyre::eyre::OptionExt;
 

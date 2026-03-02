@@ -2,7 +2,7 @@
 show_seconds = false
 format_date = "%Y-%m-%d"
 blink_colon = false
-color = "white"
+color = "White"
 center = false
 hour12h = false
 utc = false
@@ -12,6 +12,10 @@ font = "tenki"
 [general.meridiem]
 am = " [AM]"
 pm = " [PM]"
+
+[general.weather]
+wind = "disable"
+mode = "rain"
 
 [performance]
 tps = 60

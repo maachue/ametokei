@@ -39,13 +39,16 @@ pub fn install_panic_hook() {
         );
         let _ = disable_raw_mode();
 
+        #[cfg(feature = "tracing")]
+        tracing::info!("Panicked! Restore immediately.",);
+
         hook(panic_info)
     }));
 }
 
 #[cfg(feature = "tracing")]
 #[inline(always)]
-fn init_tracing() {
+fn init_tracing() -> tracing_appender::non_blocking::WorkerGuard {
     use tracing_appender::rolling;
     use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -61,6 +64,8 @@ fn init_tracing() {
                 .with_thread_ids(true),
         )
         .init();
+
+    _guard
 }
 
 #[inline]
@@ -71,6 +76,9 @@ fn get_config() -> Option<PathBuf> {
 
 fn resolve_path(cmd: &Cli) -> Result<Option<PathBuf>> {
     if let Some(p) = &cmd.config {
+        #[cfg(feature = "tracing")]
+        tracing::info!("`--config` used. Use the user config path: {}", p.display());
+
         if p.is_dir() {
             return Err(color_eyre::eyre::eyre!(
                 "Config path must be a file: {}",
@@ -89,6 +97,9 @@ fn resolve_path(cmd: &Cli) -> Result<Option<PathBuf>> {
     if let Some(p) = get_config()
         && p.exists()
     {
+        #[cfg(feature = "tracing")]
+        tracing::info!("Found config in program's config dir.");
+
         if p.is_dir() {
             return Err(color_eyre::eyre::eyre!(
                 "Bro, why do bro touch my default config file into a directory?"
@@ -102,6 +113,9 @@ fn resolve_path(cmd: &Cli) -> Result<Option<PathBuf>> {
 
 fn config_load(cmd: Cli) -> Result<(RuntimeConfig, Font)> {
     if cmd.no_config {
+        #[cfg(feature = "tracing")]
+        tracing::info!("`--no-config` flag used. Use the default config.");
+
         let mut cfg = RuntimeConfig::default();
 
         let font = if let Some(font_name) = &cmd.font {
@@ -145,6 +159,9 @@ fn config_load(cmd: Cli) -> Result<(RuntimeConfig, Font)> {
 fn config_gen(maybe_default: Option<&Path>) -> Result<()> {
     use color_eyre::eyre::OptionExt;
 
+    #[cfg(feature = "tracing")]
+    tracing::info!("`--generate-config` used. Value: {:?}", maybe_default);
+
     let default_config = UserConfig::default();
 
     let config = if let Some(config) = maybe_default {
@@ -179,7 +196,7 @@ async fn main() -> Result<()> {
     color_eyre::install()?;
 
     #[cfg(feature = "tracing")]
-    init_tracing();
+    let _guard = init_tracing();
     install_panic_hook();
 
     let cli = Cli::parse();

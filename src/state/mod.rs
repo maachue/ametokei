@@ -260,6 +260,19 @@ impl<T: EachFrameImpl> State<T> {
 
         self.clock_state = ClockState::new(area, self.clock.date.as_deref(), config, &self.font);
         self.enough_size = self.clock_state.enough;
+
+        #[cfg(feature = "tracing")]
+        if self.enough_size.is_enough() {
+            tracing::info!("Resize: ({};{})", width, height);
+        } else {
+            tracing::info!(
+                "Resize, isnt enough: ({};{}) ; >= ({};{})",
+                width,
+                height,
+                self.clock_state.area.width,
+                self.clock_state.area.height
+            );
+        }
     }
 
     pub fn tick(&mut self) -> ShouldRender {

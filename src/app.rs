@@ -63,6 +63,8 @@ where
                 }
 
                 if self.quit {
+                    #[cfg(feature = "tracing")]
+                    tracing::info!("Program will quit.");
                     break;
                 }
             }
@@ -121,6 +123,8 @@ impl<T> Drop for App<T> {
                 crossterm::cursor::Show
             );
             let _ = disable_raw_mode();
+            #[cfg(feature = "tracing")]
+            tracing::info!("Maybe restore complete.");
         }
     }
 }
