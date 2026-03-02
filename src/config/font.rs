@@ -13,8 +13,8 @@ pub enum ParseConfigFontError {
     #[error("`{0}` digit is empty!")]
     EmptyDigit(&'static str),
 
-    #[error("The `{name}` digit contains invalid/undefined symbols/characters (index: {idx}).")]
-    InvalidChar { name: &'static str, idx: u8 },
+    #[error("The `{name}` digit contains invalid/undefined symbols/characters (index char: {idx}; index array: {idx_arr}).")]
+    InvalidChar { name: &'static str, idx: u8, idx_arr: usize },
 
     #[error(
         "The `{name}` digit contains a bit that is out of bounds (allowed: 0..={max}, found: {used})."
@@ -36,7 +36,13 @@ impl TryFrom<SerializeFont> for Font {
             width: value.num_width,
             colon_width: value.colon_width,
             height: value.height,
-            symbols: value.symbols,
+            first_sym: value.symbol_1,
+            symbols: [
+                value.symbol_2,
+                value.symbol_3,
+                value.symbol_4,
+                value.symbol_5,
+            ],
             digits: [
                 value.zero,
                 value.one,
@@ -56,7 +62,15 @@ impl TryFrom<SerializeFont> for Font {
 
 impl SerializeFont {
     pub fn checker(&self) -> Result<(), ParseConfigFontError> {
-        let max = self.symbols.len() as u8;
+        let symbols = [
+            Some(&self.symbol_1),
+            self.symbol_2.as_ref(),
+            self.symbol_3.as_ref(),
+            self.symbol_4.as_ref(),
+            self.symbol_5.as_ref(),
+        ];
+
+        let max = 5;
         let all_digits = [
             ("0", &self.zero, &self.num_width),
             ("1", &self.one, &self.num_width),
@@ -86,7 +100,7 @@ impl SerializeFont {
                 });
             }
 
-            for bit in digit {
+            for (i, bit) in digit.iter().enumerate() {
                 // 0 is space, always valid
                 if *bit == 0 {
                     continue;
@@ -101,8 +115,8 @@ impl SerializeFont {
                     });
                 }
 
-                if self.symbols[(*bit - 1) as usize] == '\0' {
-                    return Err(ParseConfigFontError::InvalidChar { name, idx: *bit });
+                if symbols[(*bit - 1) as usize].is_none() {
+                    return Err(ParseConfigFontError::InvalidChar { name, idx: *bit, idx_arr: i });
                 }
             }
         }

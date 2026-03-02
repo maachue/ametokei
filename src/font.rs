@@ -9,7 +9,8 @@ pub struct Font {
     pub colon_width: u16,
     pub height: u16,
 
-    pub symbols: [char; 5],
+    pub first_sym: char,
+    pub symbols: [Option<char>; 4],
     pub digits: [Vec<u8>; 11],
 }
 impl Font {
@@ -18,7 +19,8 @@ impl Font {
             width: 5,
             height: 5,
             colon_width: 1,
-            symbols: ['█', '▀', char::default(), char::default(), char::default()],
+            first_sym: '█',
+            symbols: [Some('▀'), None, None, None],
             #[rustfmt::skip]
             digits: [
                 vec![
@@ -107,13 +109,8 @@ impl Font {
             width: 6,
             height: 5,
             colon_width: 4,
-            symbols: [
-                '█',
-                char::default(),
-                char::default(),
-                char::default(),
-                char::default(),
-            ],
+            first_sym: '█',
+            symbols: [None, None, None, None],
             #[rustfmt::skip]
             digits: [
                 vec![

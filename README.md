@@ -1,7 +1,6 @@
 # Ametokei(雨時計)
 
 _[**unofficial** fork from [Tenki(天気)](https://github.com/ckaznable/tenki)]_
-_[**improved** from [Jikan(時間)](https://github.com/maachue/jikan/tree/master)]_
 
 tty-clock with customizable configuration & weather effect written in Rust
 and powered by [ratatui](https://github.com/ratatui-org/ratatui)  
@@ -14,7 +13,7 @@ and powered by [ratatui](https://github.com/ratatui-org/ratatui)
 
 ## Roadmap
 
-- [ ] Improve configuration  
+- [x] Improve configuration  
 - [x] Improve not enough size  
 - [ ] Clean & modular code
 

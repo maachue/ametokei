@@ -2,12 +2,12 @@
 show_seconds = false
 format_date = "%Y-%m-%d"
 blink_colon = false
-color = "White"
+color = "white"
 center = false
 hour12h = false
 utc = false
 hide_date = false
-font = "digital"
+font = "_digital"
 
 [general.meridiem]
 am = " [AM]"
@@ -25,12 +25,12 @@ spacing_vertical = 1
 colon_width = 4
 num_width = 6
 height = 5
-symbols = ['█', '!', '!', '!', '!']
+symbol_1 = '█'
 
 colon = [
 0,0,0,0,
 0,1,1,0,
-0,0,0,0,
+0,0,2,0,
 0,1,1,0,
 0,0,0,0
 ]

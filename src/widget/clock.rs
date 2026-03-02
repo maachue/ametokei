@@ -32,8 +32,10 @@ impl<'a> ClockWidget<'a> {
                 chunk.into_iter().enumerate().for_each(|(x, c)| {
                     let char = if *c == 0 {
                         ' '
+                    } else if *c == 1 {
+                        self.font.first_sym
                     } else {
-                        self.font.symbols[*c as usize - 1]
+                        self.font.symbols[*c as usize - 2].expect("char isn't defined.")
                     };
 
                     // maybe panic (cell_mut return Option for less panic but i dont like it)
@@ -57,8 +59,10 @@ impl<'a> ClockWidget<'a> {
                 chunk.into_iter().enumerate().for_each(|(x, c)| {
                     let char = if *c == 0 {
                         ' '
+                    } else if *c == 1 {
+                        self.font.first_sym
                     } else {
-                        self.font.symbols[*c as usize - 1]
+                        self.font.symbols[*c as usize - 2].expect("char isn't defined.")
                     };
 
                     buf[(left + x as u16, top + y as u16)]

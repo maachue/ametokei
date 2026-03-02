@@ -2,7 +2,7 @@
 show_seconds = false
 format_date = "%Y-%m-%d"
 blink_colon = false
-color = "White"
+color = "white"
 center = false
 hour12h = false
 utc = false

@@ -96,8 +96,11 @@ pub struct SerializeFont {
     pub colon_width: u16,
     pub num_width: u16,
     pub height: u16,
-    // FIX: TOML not allowed the '\0'
-    pub symbols: [char; 5],
+    pub symbol_1: char,
+    pub symbol_2: Option<char>,
+    pub symbol_3: Option<char>,
+    pub symbol_4: Option<char>,
+    pub symbol_5: Option<char>,
 
     pub colon: Vec<u8>,
     pub zero: Vec<u8>,
