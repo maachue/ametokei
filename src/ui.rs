@@ -6,6 +6,8 @@ use crate::{
 };
 
 pub fn ui<T: EachFrameImpl + AsWeatherWidget>(f: &mut Frame, state: &mut State<T>, color: Color) {
+    let _ = crossterm::execute!(std::io::stdout(), crossterm::terminal::BeginSynchronizedUpdate);
+
     let area = f.area();
 
     if state.enough_size.is_enough() {
@@ -31,4 +33,6 @@ pub fn ui<T: EachFrameImpl + AsWeatherWidget>(f: &mut Frame, state: &mut State<T
 
         f.render_widget(NotEnoughWidget { needed_h, needed_w }, area);
     }
+
+    let _ = crossterm::execute!(std::io::stdout(), crossterm::terminal::EndSynchronizedUpdate);
 }
