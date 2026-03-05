@@ -55,6 +55,10 @@ default = []
 # debug only
 tracing = ["dep:tracing", "dep:tracing-appender", "dep:tracing-subscriber"]
 
+# ESC[?2026h/l
+# Make it as a feature because ratatui has the double buffer.
+synchronized_updates = []
+
 [profile.release]
 codegen-units = 3
 lto = true

@@ -1,6 +1,8 @@
 use std::io::Stdout;
 
 use color_eyre::eyre::Result;
+#[cfg(feature = "synchronized_updates")]
+use crossterm::QueueableCommand;
 use crossterm::{
     event::{DisableMouseCapture, KeyEvent},
     execute,
@@ -80,8 +82,18 @@ where
 
         if self.should_render.is_render() {
             self.should_render = ShouldRender::Skip;
+
+            #[cfg(feature = "synchronized_updates")]
+            let _ = std::io::stdout().queue(crossterm::terminal::BeginSynchronizedUpdate);
+
             self.terminal
                 .draw(|f| crate::ui::ui(f, &mut self.state, self.config.color))?;
+
+            #[cfg(feature = "synchronized_updates")]
+            let _ = crossterm::execute!(
+                std::io::stdout(),
+                crossterm::terminal::EndSynchronizedUpdate
+            );
         }
 
         Ok(())

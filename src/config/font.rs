@@ -13,8 +13,14 @@ pub enum ParseConfigFontError {
     #[error("`{0}` digit is empty!")]
     EmptyDigit(&'static str),
 
-    #[error("The `{name}` digit contains invalid/undefined symbols/characters (index char: {idx}; index array: {idx_arr}).")]
-    InvalidChar { name: &'static str, idx: u8, idx_arr: usize },
+    #[error(
+        "The `{name}` digit contains invalid/undefined symbols/characters (index char: {idx}; index array: {idx_arr})."
+    )]
+    InvalidChar {
+        name: &'static str,
+        idx: u8,
+        idx_arr: usize,
+    },
 
     #[error(
         "The `{name}` digit contains a bit that is out of bounds (allowed: 0..={max}, found: {used})."
@@ -116,7 +122,11 @@ impl SerializeFont {
                 }
 
                 if symbols[(*bit - 1) as usize].is_none() {
-                    return Err(ParseConfigFontError::InvalidChar { name, idx: *bit, idx_arr: i });
+                    return Err(ParseConfigFontError::InvalidChar {
+                        name,
+                        idx: *bit,
+                        idx_arr: i,
+                    });
                 }
             }
         }
