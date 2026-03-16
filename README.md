@@ -1,5 +1,9 @@
 # Jikan(時間)
 
+> [!WARNING]  
+> Jikan archived, unmaintained. Move to [ametokei](https://github.com/maachue/ametokei) instead!
+
+
 _[**unofficial** fork from [Tenki(天気)](https://github.com/ckaznable/tenki)]_
 
 tty-clock with customizable configuration written in Rust and powered by [ratatui](https://github.com/ratatui-org/ratatui)
