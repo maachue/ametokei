@@ -9,7 +9,7 @@ and powered by [ratatui](https://github.com/ratatui-org/ratatui)
 
 ## Credits
 
-- [ckaznable](https://github.com/ckaznable) - async, weather background, struct.
+- [ckaznable](https://github.com/ckaznable) - async, weather background, struct, author of Tenki!
 
 ## Roadmap
 
