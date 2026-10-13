@@ -1,0 +1,7 @@
+---
+ Checks: '-*,bugprone-*,modernize-*,performance-*,readability-*,llvm-*,clang-analyzer-*,-modernize-use-trailing-return-type,-modernize-avoid-c-arrays,-readability-identifier-length,-readability-magic-numbers,-llvm-header-guard,-bugprone-easily-swappable-parameters,-readability-braces-around-statements,-readability-implicit-bool-conversion'
+
+ExcludeHeaderFilterRegex: 'fmt/.*'
+
+FormatStyle: file
+...
